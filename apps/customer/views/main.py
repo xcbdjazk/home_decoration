@@ -20,7 +20,7 @@ def index():
         c = Customer.objects(mobile=form.get('mobile')).first()
         if c:
             login_user(c)
-        return redirect('customer_main.index')
+        return redirect(url_for('customer_main.index'))
     return rt('main/index.html', a=1)
 
 

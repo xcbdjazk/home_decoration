@@ -12,9 +12,6 @@ def create_app():
     mongo.init_app(app)
     login_manager.init_app(app)
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        return 'User.get(user_id)'
     register_jinja(app)
     register_bp(app)
     return app
