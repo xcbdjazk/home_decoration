@@ -9,6 +9,7 @@ from flask_login import login_required
 from config import config
 import os
 from models.users import *
+
 bp = Blueprint("customer_main", __name__, url_prefix='/customer/',
                template_folder=os.path.join(config.base_dir, 'apps', 'customer', 'templates'),
                static_folder='',
@@ -20,10 +21,12 @@ bp = Blueprint("customer_main", __name__, url_prefix='/customer/',
 def index():
     if request.method == 'POST':
         form = request.form
-        c = Customer.objects(mobile=form.get('mobile')).first()
+        print(form)
+        c = Customer.objects(mobile=form.get('a')).first()
+        print(c)
         if c:
             login_user(c)
-        return redirect(url_for('customer_main.index'))
+            return redirect(url_for('customer_main.register'))
     return rt('main/index.html', a=1)
 
 
@@ -34,8 +37,14 @@ def register():
         c = Customer()
         c.mobile = data.get('mobile', '')
         c.username = data.get('username', '')
-        c.username = data.get('sex', '')
-        c.password = "123"
+        c.sex = data.get('sex', '')
+        c.password = data.get('password', 'abc123')
         c.save()
         return redirect(url_for('customer_main.index'))
     return rt('main/register.html', a=1)
+
+
+@bp.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    return redirect(request.referrer)

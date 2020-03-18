@@ -1,9 +1,11 @@
 from config import mongo
 from mongoengine import SequenceField
 from mongoengine import StringField
+from mongoengine import BooleanField
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from config import login_manager
+
 __all__ = [
     'Customer',
     'Worker',
@@ -22,11 +24,16 @@ class User(mongo.Document):
     alias_id = SequenceField()
     username = StringField()
     password_hash = StringField()
+    sex = StringField()
     mobile = StringField()
+    is_active = BooleanField(default=True)
 
     @property
     def password(self):
         raise ValueError("密码不可读取")
+
+    def get_id(self):
+        return str(self.id)
 
     @password.setter
     def password(self, pwd):
@@ -45,4 +52,3 @@ class Customer(User):
 
 class Worker(User):
     pass
-
