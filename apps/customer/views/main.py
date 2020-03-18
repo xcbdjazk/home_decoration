@@ -10,7 +10,10 @@ from config import config
 import os
 from models.users import *
 bp = Blueprint("customer_main", __name__, url_prefix='/customer/',
-               template_folder=os.path.join(config.base_dir, 'apps', 'customer', 'templates'))
+               template_folder=os.path.join(config.base_dir, 'apps', 'customer', 'templates'),
+               static_folder='',
+               static_url_path=''
+               )
 
 
 @bp.route('', methods=['GET', 'POST'])

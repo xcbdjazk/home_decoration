@@ -1,3 +1,5 @@
+import os
+from config import config
 __all__ = ['register_jinja']
 
 
@@ -19,8 +21,10 @@ def register_jinja(app, has_menu=False):
         return result
 
 
-def static(filename, is_default=False):
-    pass
+def static(fa_folder, filename: str, is_default=False):
+    if filename.startswith('/'):
+        return filename
+    return '/' + filename
 
 
 def menus():
