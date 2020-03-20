@@ -9,42 +9,12 @@ from flask_login import login_required
 from config import config
 import os
 from models.users import *
+from mongoengine.queryset import Q
 
-bp = Blueprint("customer_main", __name__, url_prefix='/customer/',
-               template_folder=os.path.join(config.base_dir, 'apps', 'customer', 'templates'),
-               static_folder='',
-               static_url_path=''
-               )
+bp = Blueprint("customer_main", __name__, url_prefix='/customer/')
 
 
 @bp.route('', methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
-        form = request.form
-        print(form)
-        c = Customer.objects(mobile=form.get('a')).first()
-        print(c)
-        if c:
-            login_user(c)
-            return redirect(url_for('customer_main.register'))
-    return rt('main/index.html', a=1)
 
-
-@bp.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        data = request.form
-        c = Customer()
-        c.mobile = data.get('mobile', '')
-        c.username = data.get('username', '')
-        c.sex = data.get('sex', '')
-        c.password = data.get('password', 'abc123')
-        c.save()
-        return redirect(url_for('customer_main.index'))
-    return rt('main/register.html', a=1)
-
-
-@bp.route('/logout', methods=['GET', 'POST'])
-def logout():
-    logout_user()
-    return redirect(request.referrer)
+    return rt('customer_main/index.html')

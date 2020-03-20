@@ -2,6 +2,10 @@ from config import mongo
 from mongoengine import SequenceField
 from mongoengine import StringField
 from mongoengine import BooleanField
+from mongoengine import IntField
+from mongoengine import FloatField
+from mongoengine import DENY
+from mongoengine import ReferenceField
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from config import login_manager
@@ -9,6 +13,7 @@ from config import login_manager
 __all__ = [
     'Customer',
     'Worker',
+    'User',
 ]
 
 
@@ -27,6 +32,7 @@ class User(mongo.Document):
     sex = StringField()
     mobile = StringField()
     is_active = BooleanField(default=True)
+    is_admin = BooleanField(default=False)
 
     @property
     def password(self):
@@ -50,5 +56,39 @@ class Customer(User):
     pass
 
 
-class Worker(User):
-    pass
+class Worker(mongo.Document):
+    meta = {'allow_inheritance': True, 'collection': 'worker'}
+    user = ReferenceField(User, reverse_delete_rule=DENY)
+    # 服务次数
+    service_count = FloatField(default=0)
+    # 技术得分
+    jishu_score = FloatField(default=0)
+    # 用时得分
+    time_score = FloatField(default=0)
+    # 态度得分
+    attitude_score = FloatField(default=0)
+    # 平均分
+    avg_score = FloatField(default=0)
+
+    def save_self(self):
+        pass
+
+    @staticmethod
+    def format_float(f: float):
+        return float("%.1f" % f)
+
+    def ref_score(self, jishu_score, time_score, attitude_score):
+        all_jishu_score = self.jishu_score * self.service_count + jishu_score
+        self.jishu_score = self.format_float(all_jishu_score / (self.service_count + 1))
+        all_time_score = self.time_score * self.service_count + time_score
+        self.time_score = self.format_float(all_time_score / (self.service_count + 1))
+        all_attitude_score = self.attitude_score * self.service_count + attitude_score
+        self.attitude_score = self.format_float(all_attitude_score / (self.service_count + 1))
+        self.service_count += 1
+        self.avg_score = self.format_float(
+            (self.jishu_score + self.time_score + self.attitude_score) / 3 / self.service_count)
+        self.save()
+
+
+class Admin(User):
+    is_admin = BooleanField(default=True)
