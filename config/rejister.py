@@ -1,6 +1,3 @@
-import os
-from config import config
-__all__ = ['register_jinja']
 
 
 def register_jinja(app, has_menu=False):
@@ -34,3 +31,8 @@ def menus():
 def permission(endpoint):
 
     return ""
+
+
+def register_data(app):
+    with app.app_context() as c:
+        print('register_data')

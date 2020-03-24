@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "bootstrap/base.html" %}
+{% block title%}
+123
+{% endblock%}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block script%}
+<script>
+    function f() {
+
+    }
+</script>
+{% endblock%}
+{% block content %}
+
+
 <form action="" method="post">
     <label>
         姓名:
@@ -20,5 +31,4 @@
     </label>
     <button>提交</button>
 </form>
-</body>
-</html>
+{% endblock %}

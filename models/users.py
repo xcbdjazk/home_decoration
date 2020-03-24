@@ -9,7 +9,7 @@ from mongoengine import ReferenceField
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 from config import login_manager
-
+from flask_login import UserMixin
 __all__ = [
     'Customer',
     'Worker',
@@ -23,7 +23,7 @@ def load_user(user_id):
     return User.objects(id=user_id).first()
 
 
-class User(mongo.Document):
+class User(mongo.Document, UserMixin):
     meta = {'allow_inheritance': True, 'collection': 'user'}
 
     alias_id = SequenceField()
@@ -31,15 +31,11 @@ class User(mongo.Document):
     password_hash = StringField()
     sex = StringField()
     mobile = StringField()
-    is_active = BooleanField(default=True)
     is_admin = BooleanField(default=False)
 
     @property
     def password(self):
         raise ValueError("密码不可读取")
-
-    def get_id(self):
-        return str(self.id)
 
     @password.setter
     def password(self, pwd):
@@ -53,7 +49,10 @@ class User(mongo.Document):
 
 
 class Customer(User):
-    pass
+
+    @property
+    def is_worker(self):
+        return bool(Worker.objects(user=self).count())
 
 
 class Worker(mongo.Document):

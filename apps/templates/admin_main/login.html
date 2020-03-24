@@ -12,7 +12,7 @@
     <div class="mid-class">
 	 <div class="art-right-w3ls">
 		<h2>Sign In and Sign Up</h2>
-		<form action="#" method="post">
+		<form action="#" method="post" id="login_form">
 		   <div class="main">
 			  <div class="form-left-to-w3l">
 				 <input type="text" name="mobile" placeholder="Username" required="">
@@ -88,7 +88,7 @@
 $('#submit').click(function (event) {
     event.stopPropagation();
     event.preventDefault();
-    let form_data = $("form").serializeArray();
+    let form_data = $("#login_form").serializeArray();
     let data = {};
     $.each(form_data, function (index, arrayData) {
         if (data[arrayData.name] !== undefined && data[arrayData.name].constructor === Array) {

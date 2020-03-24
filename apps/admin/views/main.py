@@ -18,15 +18,15 @@ bp = Blueprint("admin", __name__, url_prefix='/')
 @bp.route('', methods=['GET', 'POST'])
 def index():
 
-    return rt('admin_main/login.html')
+    return redirect(request.args.get('next') or url_for('customer_main.index'))
 
 
 @bp.route('login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         form = request.form
-        c = User.objects(Q(mobile=form.get('mobile')) | Q(mobile=form.get('username'))).first()
-        if c:
+        c:User = User.objects(Q(mobile=form.get('mobile')) | Q(mobile=form.get('username'))).first()
+        if c and c.verify_password(form.get('password')):
             login_user(c)
             return rest.success(data={"url": url_for('customer_main.index')})
         return rest.params_error('请检查账号密码')
@@ -36,7 +36,7 @@ def login():
 @bp.route('register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(request.args.get('next') or url_for('main.home'))
+        return redirect(request.args.get('next') or url_for('customer.index'))
     if request.method == 'POST':
         data = request.form
         c = Customer()
@@ -46,11 +46,11 @@ def register():
         c.password = data.get('password', 'abc123')
         c.save()
         return redirect(url_for('customer_main.index'))
-    return rt('main/register.html', a=1)
+    return rt('admin_main/register.html', a=1)
 
 
 @bp.route('logout', methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
-    return redirect(request.referrer)
+    return redirect(request.args.get('next') or url_for('customer_main.index'))

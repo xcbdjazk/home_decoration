@@ -4,6 +4,7 @@ from config import config
 from config import login_manager
 from config import bootstrap
 from config.rejister import register_jinja
+from config.rejister import register_data
 from apps.customer.views import main as customer_admin
 from apps.admin.views import main as admin_main
 
@@ -17,6 +18,8 @@ def create_app():
 
     register_jinja(app)
     register_bp(app)
+    register_bp(app)
+    register_data(app)
     return app
 
 
