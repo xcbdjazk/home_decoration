@@ -2,6 +2,8 @@ from flask import Blueprint
 from flask import request
 from flask import redirect
 from flask import url_for
+from flask import make_response
+from flask import session
 from flask import render_template as rt
 from flask_login import login_user
 from flask_login import logout_user
@@ -11,7 +13,8 @@ from config import config
 import os
 from models.users import *
 from mongoengine.queryset import Q
-from uilts import rest
+from utils import rest
+from utils.utils import ValidCodeImg
 bp = Blueprint("admin", __name__, url_prefix='/')
 
 
@@ -47,6 +50,16 @@ def register():
         c.save()
         return redirect(url_for('customer_main.index'))
     return rt('admin_main/register.html', a=1)
+
+
+@bp.route('verify/code')
+def verify_code():
+    # 验证码
+    image, string = ValidCodeImg().getValidCodeImg()
+    session['images_code'] = string.lower()
+    response = make_response(image)
+    response.headers["Content-Type"] = "image/png"
+    return response
 
 
 @bp.route('logout', methods=['GET', 'POST'])

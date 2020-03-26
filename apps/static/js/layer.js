@@ -8,7 +8,7 @@ function layer_pop(e) {
       title,
       shadeClose: true,
       shade: 0.8,
-      area: ['380px', '90%'],
+      area: ['40%', '60%'],
       content: url //iframe的url
     })
 }
