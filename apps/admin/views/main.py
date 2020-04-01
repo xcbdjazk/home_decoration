@@ -42,13 +42,25 @@ def register():
         return redirect(request.args.get('next') or url_for('customer.index'))
     if request.method == 'POST':
         data = request.form
+
+        if session['images_code'] != data['code'].lower():
+            return rest.params_error('验证码错误')
+        for i in list(data.keys()):
+            if not data[i]:
+                return rest.params_error('请确认填写信息')
+        if len(data['mobile']) != 11:
+            return rest.params_error('手机号长度不正确')
+        if User.objects(mobile=data['mobile']).count():
+            return rest.params_error('手机号已经被注册')
+        if not (6 <= len(data['password']) <= 12):
+            return rest.params_error('密码长度6-12位')
         c = Customer()
         c.mobile = data.get('mobile', '')
         c.username = data.get('username', '')
         c.sex = data.get('sex', '')
         c.password = data.get('password', 'abc123')
         c.save()
-        return redirect(url_for('customer_main.index'))
+        return rest.success('注册成功!')
     return rt('admin_main/register.html', a=1)
 
 
