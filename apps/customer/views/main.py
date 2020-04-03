@@ -11,10 +11,23 @@ import os
 from models.users import *
 from mongoengine.queryset import Q
 
-bp = Blueprint("customer_main", __name__, url_prefix='/customer/')
+bp = Blueprint("customer_main", __name__, url_prefix='/customer')
 
 
-@bp.route('', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET', 'POST'])
 def index():
 
     return rt('customer_main/index.html')
+
+
+@bp.route('/task/detail', methods=['GET', 'POST'])
+def task_detail():
+
+    return rt('customer_main/task_detail.html')
+
+
+@bp.route('/add/task', methods=['GET', 'POST'])
+def task_add():
+    wts = WorkerType.objects.all()
+    content = {"wts": wts}
+    return rt('customer_main/task_add.html',**content)

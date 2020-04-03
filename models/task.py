@@ -8,7 +8,7 @@ from mongoengine import ListField
 from mongoengine import DateTimeField
 from mongoengine import DENY
 from mongoengine import ReferenceField
-from .users import User
+from .users import *
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 import datetime
@@ -25,6 +25,8 @@ class Task(mongo.Document):
 
 class CustomerTask(Task):
     user = ReferenceField(User, reverse_delete_rule=DENY)
+    # 标题
+    title = StringField()
     # 图集
     images = ListField(StringField())
     # 介绍
@@ -38,3 +40,9 @@ class CustomerTask(Task):
     # -1 = 已取消
     status = IntField(choices=(0, 1, 2, -1), default=0)
     join_user = ReferenceField(User, reverse_delete_rule=DENY)
+    # 价格
+    price = FloatField()
+    # 工期
+    work_time = FloatField()
+    # 工种
+    work_type = ListField(ReferenceField(WorkerType, reverse_delete_rule=DENY))

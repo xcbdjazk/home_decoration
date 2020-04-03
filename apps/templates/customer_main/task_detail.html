@@ -19,7 +19,19 @@
 {% block text %}
 
     <div class="container">
-
+        <div class="row ">
+            <div class="classify">
+            <span>
+                <a href="{{url_for('customer_main.task_add')}}" type="button" class="btn btn-link">添加任务</a>
+            </span>
+            <span>
+                <a href="" type="button" class="btn btn-primary">查看进行中的任务</a>
+            </span>
+            <span>
+                <a href="" type="button" class="btn btn-danger">查看已完成的任务</a>
+            </span>
+            </div>
+        </div>
         <div class="row">
             <div class="input-group input-group-lg">
                 <input type="text" class="form-control" aria-label="...">
@@ -29,18 +41,7 @@
                 </div>
             </div>
         </div>
-        <div class="row ">
-            <div class="classify">
-            <span>
-                任务发布:
-            </span>
-            </div>
-            <div class="classify">
-            <span>
-                工人需求:
-            </span>
-            </div>
-        </div>
+
         <div class="content">
             <table class="table table-hover">
                 <thead>
@@ -57,17 +58,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                </tr>
                 <tr>
                     <td>123123</td>
                     <td>123123</td>

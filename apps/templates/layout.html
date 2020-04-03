@@ -30,7 +30,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
                 <li><a href="">欢迎 {{current_user.username}}</a></li>
-                <li><a href="">任务管理</a></li>
+                <li><a href="{{url_for('customer_main.task_detail')}}">任务管理</a></li>
                     {% if current_user.is_worker %}
                         <li><a href="">我的工单</a></li>
                     {% endif %}

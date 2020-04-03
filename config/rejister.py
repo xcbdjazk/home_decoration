@@ -1,5 +1,6 @@
 
 
+
 def register_jinja(app, has_menu=False):
     result = {}
     result['static'] = static
@@ -34,5 +35,11 @@ def permission(endpoint):
 
 
 def register_data(app):
+    from models.users import WorkerType
     with app.app_context() as c:
+
+        if WorkerType.objects.count():
+            return
+        for i in ['修理工', '装修工']:
+            WorkerType(name=i).save()
         print('register_data')

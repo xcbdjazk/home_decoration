@@ -15,6 +15,7 @@ from models.users import *
 from mongoengine.queryset import Q
 from utils import rest
 from utils.utils import ValidCodeImg
+from utils.utils import random_filename
 bp = Blueprint("admin", __name__, url_prefix='/')
 
 
@@ -79,3 +80,21 @@ def verify_code():
 def logout():
     logout_user()
     return redirect(request.args.get('next') or url_for('customer_main.index'))
+
+
+@bp.route('upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    base_dir = os.path.join(config.base_dir, 'apps', 'static', 'user_file')
+    urls = []
+    for i in request.files.getlist('file'):
+        filename = random_filename(i.filename)
+        i.save(os.path.join(base_dir, filename))
+        urls.append(os.path.join(
+            '/static', 'user_file',
+            filename
+        ))
+    return {
+    "errno": 0,
+    "data": urls
+}

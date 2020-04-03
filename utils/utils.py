@@ -4,6 +4,7 @@ from PIL import ImageFont
 from config import config
 import random
 import os
+import uuid
 
 
 class ValidCodeImg:
@@ -91,6 +92,12 @@ class ValidCodeImg:
         f.close()
 
         return data, valid_str
+
+
+def random_filename(filename: str):
+    ext = filename.rsplit('.', 1)[-1]
+    new_filename = uuid.uuid4().hex + "." + ext
+    return new_filename
 
 
 if __name__ == '__main__':

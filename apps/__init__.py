@@ -18,7 +18,6 @@ def create_app():
 
     register_jinja(app)
     register_bp(app)
-    register_bp(app)
     register_data(app)
     return app
 

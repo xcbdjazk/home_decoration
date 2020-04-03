@@ -1,0 +1,232 @@
+{% extends "layout.html" %}
+{% block title %}
+    333
+{% endblock %}
+{% block header %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='select2/css/select2.css')  }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='select2/css/select2-bootstrap.css')  }}">
+    <script src="{{ url_for('static', filename='wangEditor-3.1.1/release/wangEditor.js') }}"></script>
+    <style>
+        .classify {
+            margin: 30px 20px;
+        }
+
+        .table td {
+            height: 60px;
+            line-height: 60px !important;
+        }
+
+        .breadcrumb {
+            background-color: #fcfcfc;
+        }
+
+        .upload_file {
+
+            display: inline-block;
+            position: relative;
+        }
+
+        .upload_file img {
+            width: 100px;
+            height: 100px;
+            margin-left: 30px;
+        }
+
+        .upload_file input[type='file'], .delete_file {
+            position: absolute;
+            top: 0;
+
+        }
+        .upload_file input[type='file']{
+            left: 30px;
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+        }
+        .delete_file{
+            background-color: #ebebeb;
+            display: none;
+            right: 0;
+            cursor: pointer;
+        }
+        .upload_file:hover .delete_file{
+            display: block;
+
+        }
+        .w-e-text-container{
+            min-height: 700px;!important;
+        }
+        .text{
+            min-height: 1400px;
+        }
+    #editor{
+        margin: 40px 0;
+    }
+    </style>
+{% endblock %}
+
+
+{% block text %}
+
+    <div class="container text">
+        <div class="row ">
+            <ol class="breadcrumb">
+                <li><a href="{{ url_for('customer_main.task_detail') }}">我的任务</a></li>
+                <li class="active">添加任务</li>
+            </ol>
+        </div>
+        <div class="row">
+            <form>
+                <div class="form-group">
+                    <label for="title">添加标题</label>
+                    <input type="text" name="title" class="form-control" id="title" placeholder="标题">
+                </div>
+
+                <div class="form-group">
+                    <label for="title">期望工种</label>
+                    <select class="form-control" name="work_type" id="work_type" multiple>
+                        {% for i in wts %}
+                            <option value="{{ i.id }}">{{i.name}}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label for="work_time">预计工期(天)</label>
+                    <input type="number" name="work_time" class="form-control" id="work_time" placeholder="预计工期">
+                </div>
+                <div class="form-group">
+                    <label for="price">出价(元) <strong style="color: red"></strong></label>
+                    <input type="text" name="price" class="form-control" id="price" placeholder="价格">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="file">上传图片</label>
+                    <div class="upload_file">
+                        <img src="{{ url_for('static', filename='images/up.png') }}" alt="">
+                        <span class="glyphicon glyphicon-trash delete_file"></span>
+                    </div>
+                     <div class="upload_file">
+                        <img src="{{ url_for('static', filename='images/up.png') }}" alt="">
+                        <span class="glyphicon glyphicon-trash delete_file"></span>
+                    </div>
+                    <div class="upload_file">
+                        <img src="{{ url_for('static', filename='images/up.png') }}" alt="">
+                        <input type="file" name="file" id="file" placeholder="上传图片" multiple="multiple">
+                    </div>
+                </div>
+                <div id="editor">
+
+                </div>
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="submit">添加任务</button>
+            </form>
+        </div>
+
+    </div>
+    <div class="copy-image" style="display: none">
+        <div class="upload_file">
+            <img src="{{ url_for('static', filename='images/up.png') }}" alt="">
+            <span class="glyphicon glyphicon-trash delete_file"></span>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    <script src="{{ url_for('static', filename='select2/js/select2.js') }}"></script>
+    <script src="{{ url_for('static',filename='jquery-file-upload/js/jquery.ui.widget.js') }}"></script>
+    <script src="{{ url_for('static',filename='jquery-file-upload/js/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ url_for('static',filename='jquery-file-upload/js/jquery.fileupload.js') }}"></script>
+    <script type="text/javascript">
+        var E = window.wangEditor
+
+        var editor = new E('#editor')
+        editor.customConfig.uploadImgServer = '/upload'
+        editor.customConfig.uploadImgMaxSize = 10 * 1024 * 1024
+        editor.customConfig.showLinkImg = false
+        editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        'fontSize',  // 字号
+        'fontName',  // 字体
+        'italic',  // 斜体
+        'underline',  // 下划线
+        'strikeThrough',  // 删除线
+        'foreColor',  // 文字颜色
+        'backColor',  // 背景颜色
+        'link',  // 插入链接
+        'list',  // 列表
+        'justify',  // 对齐方式
+        'quote',  // 引用
+        'emoticon',  // 表情
+        'image',  // 插入图片
+        'table',  // 表格
+        'video',  // 插入视频
+        'undo',  // 撤销
+        'redo'  // 重复
+    ]
+        editor.customConfig.uploadFileName = 'file'
+        // 或者 var editor = new E( document.getElementById('editor') )
+        editor.create()
+    </script>
+
+    <script>
+        $('#work_type').select2({})
+    </script>
+    <script>
+    $('#file').fileupload({
+                url: '/upload',
+                dataType: 'json',
+                singleFileUploads: false,
+                done: function (e, data) {
+                    setTimeout(function () {
+                        parent.layer.close(upload_layer);
+                    }, 1500)
+                    console.log(data.result)
+
+                },
+                add: function (e, data) {
+                    upload_layer = parent.layer.msg('正在上传，请稍后...', {
+                        icon: 16,
+                        shade: 0.1,
+                        time: 999999
+                    });
+                    let files = data.files
+                    for(let i in files){
+                        if (!/.(gif|jpg|jpeg|png|gif|jpg|png)$/.test(files[i].name)){
+                            parent.layer.close(upload_layer);
+                            parent.layer.msg('请上传正确文件格式的图片', {
+                                icon: 16,
+                                shade: 0.1,
+                            })
+                            return
+                        }
+                    }
+
+                    data.submit();
+                }
+            })
+
+    </script>
+    <script>
+        $("#submit").click(function (event) {
+            let title = $('#title').val()
+            if (!title) {
+                layer.msg('请填写标题')
+            }
+            let work_type = $('#work_type').val()
+            if (!work_type) {
+                layer.msg('请选择工种')
+            }
+            let work_time = $('#work_time').val()
+            if (!work_time) {
+                layer.msg('请填写工期')
+            }
+            let price = $('#price').val()
+            if (!price) {
+                layer.msg('请填写价格')
+            }
+        })
+    </script>
+{% endblock %}

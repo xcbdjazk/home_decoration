@@ -4,6 +4,7 @@ from mongoengine import StringField
 from mongoengine import BooleanField
 from mongoengine import IntField
 from mongoengine import FloatField
+from mongoengine import ListField
 from mongoengine import DENY
 from mongoengine import ReferenceField
 from werkzeug.security import check_password_hash
@@ -14,6 +15,7 @@ __all__ = [
     'Customer',
     'Worker',
     'User',
+    'WorkerType',
 ]
 
 
@@ -21,6 +23,7 @@ __all__ = [
 def load_user(user_id):
     # login_manager 登录
     return User.objects(id=user_id).first()
+
 
 
 class User(mongo.Document, UserMixin):
@@ -55,6 +58,12 @@ class Customer(User):
         return bool(Worker.objects(user=self).count())
 
 
+class WorkerType(mongo.Document):
+    meta = {'collection': 'worker_type'}
+
+    name = StringField()
+
+
 class Worker(mongo.Document):
     meta = {'allow_inheritance': True, 'collection': 'worker'}
     user = ReferenceField(User, reverse_delete_rule=DENY)
@@ -68,6 +77,14 @@ class Worker(mongo.Document):
     attitude_score = FloatField(default=0)
     # 平均分
     avg_score = FloatField(default=0)
+    # 工种
+    work_type = ListField(ReferenceField(WorkerType, reverse_delete_rule=DENY))
+    # 自我介绍
+    desc = StringField()
+    # 0 = 审核中
+    # 1 = 正常
+    # -1 = 违规
+    status = IntField(default=0)
 
     def save_self(self):
         pass
