@@ -67,6 +67,7 @@ class WorkerType(mongo.Document):
 class Worker(mongo.Document):
     meta = {'allow_inheritance': True, 'collection': 'worker'}
     user = ReferenceField(User, reverse_delete_rule=DENY)
+    work_year = FloatField()
     # 服务次数
     service_count = FloatField(default=0)
     # 技术得分

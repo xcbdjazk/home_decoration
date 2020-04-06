@@ -16,6 +16,8 @@ from mongoengine.queryset import Q
 from utils import rest
 from utils.utils import ValidCodeImg
 from utils.utils import random_filename
+from bson import ObjectId
+
 bp = Blueprint("admin", __name__, url_prefix='/')
 
 
@@ -35,6 +37,31 @@ def login():
             return rest.success(data={"url": url_for('customer_main.index')})
         return rest.params_error('请检查账号密码')
     return rt('admin_main/login.html')
+
+
+@bp.route('register_worker', methods=['GET', 'POST'])
+def register_worker():
+    if request.method == "POST":
+        data = request.form
+        if session['images_code'] != data['code'].lower():
+            return rest.params_error('验证码错误')
+        if not data.get('work_type'):
+            return rest.params_error('请选择工种')
+        if not data.get('work_year'):
+            return rest.params_error('请填写工龄')
+        worker = Worker.objects.first()
+        if not worker:
+            worker = Worker()
+        worker.user = current_user.id
+        worker.work_type = [ObjectId(i) for i in data.getlist('work_type')]
+        worker.work_year = float(data.get('work_year'))
+        worker.save()
+        return rest.success('注册成功,请等待审核')
+    wts = WorkerType.objects.all()
+    content = {"wts": wts,
+               "user": current_user
+    }
+    return rt('admin_main/register_worker.html', **content)
 
 
 @bp.route('register', methods=['GET', 'POST'])

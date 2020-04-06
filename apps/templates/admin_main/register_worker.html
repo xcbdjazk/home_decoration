@@ -1,0 +1,119 @@
+{% extends "layout_base.html" %}
+{% block title%}
+123
+{% endblock%}
+{% block header %}
+    <style>
+        body {
+            width: 90%;
+            margin-top: 20px;
+        }
+    form {
+        margin-left: 10%;
+    }
+    img {
+        cursor:pointer;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<form class="form-horizontal" action="" method="post" id="register_form">
+  <div class="form-group">
+    <label for="inputEmail3" class="col-xs-2 control-label">姓名</label>
+    <div class="col-xs-10">
+      <input type="text" class="form-control" name="username"  value="{{ user.username }}" readonly>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputEmail3" class="col-xs-2 control-label">手机号</label>
+    <div class="col-xs-10">
+      <input type="text" class="form-control" name="mobile"  value="{{ user.mobile }}" readonly>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="sex" class="col-xs-2 control-label">您的工种</label>
+      <div class="col-xs-10">
+        <select class="form-control" id="sex" name="work_type">
+            <option value="">请选择</option>
+            {% for foo in wts %}
+                <option value={{ foo.id }}>{{ foo.name }}</option>
+            {% endfor %}
+        </select>
+      </div>
+  </div>
+    <div class="form-group">
+    <label for="inputEmail3" class="col-xs-2 control-label">工龄(年)</label>
+    <div class="col-xs-10">
+      <input type="number" class="form-control" name="work_year"  value="">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="sex" class="col-xs-2 control-label">验证码</label>
+      <div class="col-xs-7">
+        <input type="text" class="form-control" placeholder="验证码" name="code">
+      </div>
+      <div class="col-xs-3">
+          <img src="{{ url_for('admin.verify_code') }}" alt="" id="image">
+      </div>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-offset-2 col-xs-10">
+        <button type="submit" class="btn btn-primary btn-lg btn-block" id="sign_up">注册</button>
+    </div>
+  </div>
+</form>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+    var index = 1
+     $('#image').click(function () {
+         index +=1
+         let url = "{{ url_for('admin.verify_code') }}?ref=" + index
+         $(this).attr('src', url)
+     })
+    </script>
+    <script>
+        $('#sign_up').click(function (event) {
+    event.stopPropagation();
+    event.preventDefault();
+    let form_data = $("#register_form").serializeArray();
+    let data = {};
+    $.each(form_data, function (index, arrayData) {
+        if (data[arrayData.name] !== undefined && data[arrayData.name].constructor === Array) {
+
+            data[arrayData.name].push(arrayData.value)
+        } else if (data[arrayData.name] !== undefined) {
+            data[arrayData.name] = [data[arrayData.name]];
+            data[arrayData.name].push(arrayData.value)
+        } else {
+            data[arrayData.name] = (arrayData.value)
+        }
+    });
+    $.post({
+        url:'',
+        data:data,
+        success:function (data) {
+            return data
+        }
+    }).then(function (data) {
+        if(data.code === 200){
+            parent.layer.closeAll();
+            if(data.message){
+                parent.layer.msg(data.message)
+            }
+            setTimeout(function () {
+                 parent.location.reload()
+            },2000)
+        }else {
+            parent.layer.msg(data.message)
+        }
+
+
+    })
+})
+    </script>
+{% endblock %}

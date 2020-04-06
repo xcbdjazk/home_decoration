@@ -76,46 +76,61 @@
         <div class="row ">
             <ol class="breadcrumb">
                 <li><a href="{{ url_for('customer_main.task_detail') }}">我的任务</a></li>
-                <li class="active">添加任务</li>
+                <li class="active">修改任务</li>
             </ol>
         </div>
         <div class="row">
             <form>
                 <div class="form-group">
                     <label for="title">添加标题</label>
-                    <input type="text" name="title" class="form-control" id="title" placeholder="标题">
+                    <input type="text" name="title" class="form-control" id="title" placeholder="标题" value="{{ c.title }}">
                 </div>
 
                 <div class="form-group">
                     <label for="title">期望工种</label>
                     <select class="form-control" name="work_type" id="work_type" multiple>
                         {% for i in wts %}
-                            <option value="{{ i.id }}">{{i.name}}</option>
+                            {% if i in c.work_type %}
+                                <option value="{{ i.id }}" selected>{{i.name}}</option>
+                            {% else %}
+                                <option value="{{ i.id }}">{{i.name}}</option>
+                            {% endif %}
+
                         {% endfor %}
                     </select>
 
                 </div>
                 <div class="form-group">
                     <label for="work_time">预计工期(天)</label>
-                    <input type="number" name="work_time" class="form-control" id="work_time" placeholder="预计工期">
+                    <input type="number" name="work_time" class="form-control" id="work_time" placeholder="预计工期"
+                    value="{{ c.work_time }}">
                 </div>
                 <div class="form-group">
                     <label for="price">出价(元) <strong style="color: red"></strong></label>
-                    <input type="number" name="price" class="form-control" id="price" placeholder="价格">
+                    <input type="number" name="price" class="form-control" id="price" placeholder="价格"
+                    value='{{ c.price }}'>
                 </div>
 
 
                 <div class="form-group file_image">
                     <label for="file">上传图片</label>
+                    {% for foo in c.images%}
+                    <div class="upload_file">
+                        <img src="{{ foo }}" alt="">
+                        <span class="glyphicon glyphicon-trash delete_file"></span>
+                    </div>
+                    {% endfor %}
+
                     <div class="upload_file click_upload">
                         <img src="{{ url_for('static', filename='images/up.png') }}" alt="">
                         <input type="file" name="file" id="file" placeholder="上传图片" multiple="multiple">
                     </div>
                 </div>
+
                 <div id="editor">
 
                 </div>
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="submit">添加任务</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="submit">修改任务</button>
             </form>
         </div>
 
@@ -164,7 +179,9 @@
     ]
         editor.customConfig.uploadFileName = 'file'
         // 或者 var editor = new E( document.getElementById('editor') )
+
         editor.create()
+        editor.txt.html('{{ c.desc | safe}}')
     </script>
 
     <script>

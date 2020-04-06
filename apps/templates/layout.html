@@ -33,6 +33,8 @@
                 <li><a href="{{url_for('customer_main.task_detail')}}">任务管理</a></li>
                     {% if current_user.is_worker %}
                         <li><a href="">我的工单</a></li>
+                    {% else %}
+                        <li><a href="{{url_for('admin.register_worker')}}" class="pop_layer" title="工人注册">工人注册</a></li>
                     {% endif %}
                 <li><a href="{{url_for('admin.logout')}}">退出登录</a></li>
                 {% else%}
