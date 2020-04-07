@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>详情页面</title>
+    <link href="1.css" rel="stylesheet" type="text/css">
+
+    <script src="https://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="1.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var showproduct = {
+                "boxid": "showbox",
+                "sumid": "showsum",
+                "boxw": 400,
+                "boxh": 550,
+                "sumw": 60,//列表每个宽度,该版本中请把宽高填写成一样
+                "sumh": 60,//列表每个高度,该版本中请把宽高填写成一样
+                "sumi": 7,//列表间隔
+                "sums": 5,//列表显示个数
+                "sumsel": "sel",
+                "sumborder": 1,//列表边框，没有边框填写0，边框在css中修改
+                "lastid": "showlast",
+                "nextid": "shownext"
+            };//参数定义
+            $.ljsGlasses.pcGlasses(showproduct);//方法调用，务必在加载完后执行
+
+            $(function () {
+
+                $('.tabs a').click(function () {
+
+                    var $this = $(this);
+                    $('.panel').hide();
+                    $('.tabs a.active').removeClass('active');
+                    $this.addClass('active').blur();
+                    var panel = $this.attr("href");
+                    $(panel).show();
+                    return fasle;  //告诉浏览器  不要纸箱这个链接
+                })//end click
+
+
+                $(".tabs li:first a").click()   //web 浏览器，单击第一个标签吧
+
+
+            })//end ready
+
+            $(".centerbox li").click(function () {
+                $("li").removeClass("now");
+                $(this).addClass("now")
+
+            });
+
+
+        });
+
+
+    </script>
+</head>
+
+<body>
+<!-----header部分------->
+
+<!-----header结束------->
+<!-----商品详情部分------->
+<div class="shopdetails">
+    <!-------放大镜-------->
+    <div id="leftbox">
+        <div id="showbox">
+            <img src="images/shopdetail/img01.png" width="400" height="550"/>
+            <img src="images/shopdetail/img02.png" width="400" height="550"/>
+            <img src="images/shopdetail/img03.png" width="400" height="550"/>
+            <img src="images/shopdetail/img04.png" width="400" height="550"/>
+            <img src="images/shopdetail/img05.png" width="400" height="400"/>
+            <img src="images/shopdetail/img01.png" width="400" height="400"/>
+
+        </div><!--展示图片盒子-->
+        <div id="showsum"></div><!--展示图片里边-->
+        <p class="showpage">
+            <a href="javascript:void(0);" id="showlast"> < </a>
+            <a href="javascript:void(0);" id="shownext"> > </a>
+        </p>
+
+    </div>
+    <!----中间----->
+
+    <div class="centerbox">
+        <p class="imgname">叠叠杯水杯茶杯套杯陶瓷咖啡牛奶杯具套装</p>
+        <p class="Aprice">价格：<samp>￥89.00</samp></p>
+        <p class="price">促销价：<samp>￥49.00</samp></p>
+        <p class="youhui">店铺优惠：<samp>购物满两件打八折</samp></p>
+        <p class="kefu">客服：</p>
+        <div class="clear"></div>
+        <p class="chima">尺码：</p>
+        <p class="buy"><a href="#" id="firstbuy">立即购买</a><a href="#">加入购物车</a></p>
+        <div class="clear"></div>
+    </div>
+
+
+</div>
+
+</body>
+</html>
