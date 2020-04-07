@@ -25,7 +25,6 @@ def load_user(user_id):
     return User.objects(id=user_id).first()
 
 
-
 class User(mongo.Document, UserMixin):
     meta = {'allow_inheritance': True, 'collection': 'user'}
 
@@ -56,6 +55,10 @@ class Customer(User):
     @property
     def is_worker(self):
         return bool(Worker.objects(user=self).count())
+
+    @property
+    def worker(self):
+        return Worker.objects(user=self).first()
 
 
 class WorkerType(mongo.Document):

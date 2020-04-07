@@ -7,6 +7,7 @@ from config.rejister import register_jinja
 from config.rejister import register_data
 from apps.customer.views import main as customer_admin
 from apps.admin.views import main as admin_main
+from apps.worker.views import main as worker_main
 
 
 def create_app():
@@ -25,3 +26,4 @@ def create_app():
 def register_bp(app):
     app.register_blueprint(admin_main.bp)
     app.register_blueprint(customer_admin.bp)
+    app.register_blueprint(worker_main.bp)
