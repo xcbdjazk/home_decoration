@@ -40,18 +40,8 @@
                 {% if current_user.is_authenticated %}
                 <li><a href="">欢迎 {{current_user.username}}</a></li>
                 <li><a href="{{url_for('customer_main.task_detail')}}">任务管理</a></li>
-                    {% if current_user.is_worker %}
-                        {% if current_user.worker.status == 0 %}
-                            <li><a href="#" onclick="layer.msg('正在审核中,请等待')">我的工单</a></li>
-                        {% elif current_user.worker.status == -1 %}
-                            <li><a href="#" onclick="layer.msg('涉嫌违规,不能进入')">我的工单</a></li>
-                        {% else %}
-                            <li><a href="{{ url_for("worker_main.index") }}" >我的工单</a></li>
-                        {% endif %}
+                <li><a href="{{url_for('customer_main.message_list')}}" w="30%" h="80%" title="消息" class="pop_layer">消息(1)</a></li>
 
-                    {% else %}
-                        <li><a href="{{url_for('admin.register_worker')}}" class="pop_layer" title="工人注册">工人注册</a></li>
-                    {% endif %}
                 <li><a href="{{url_for('admin.logout')}}">退出登录</a></li>
                 {% else%}
                 <li><a href="{{url_for('admin.login',next=request.url)}}">登录</a></li>

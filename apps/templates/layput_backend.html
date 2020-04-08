@@ -9,7 +9,7 @@
         z-index: 1000;
     }
     .navbar-default{
-        background-color: #101010;
+        background-color: #222;
     }
     .navbar-default li:hover{
         background-color: rgba(245, 245, 245, 0.54);
@@ -28,26 +28,25 @@
             <div class="sidebar-nav navbar-collapse slimscrollsidebar">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="index.html" class="waves-effect"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
+                        <a href="#" class="waves-effect"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
                     </li>
                     <li>
-                        <a href="profile.html" class="waves-effect"><i class="fa fa-user fa-fw" aria-hidden="true"></i><span class="hide-menu">Profile</span></a>
-                    </li>
+                        <a href="{{url_for('customer_main.task_detail')}}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">任务管理</span></a></li>
                     <li>
-                        <a href="basic-table.html" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">Basic Table</span></a>
-                    </li>
-                    <li>
-                        <a href="fontawesome.html" class="waves-effect"><i class="fa fa-font fa-fw" aria-hidden="true"></i><span class="hide-menu">Icons</span></a>
-                    </li>
-                    <li>
-                        <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i><span class="hide-menu">Google Map</span></a>
-                    </li>
-                    <li>
-                        <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw" aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
-                    </li>
-                    <li>
-                        <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i><span class="hide-menu">Error 404</span></a>
-                    </li>
+                    {% if current_user.is_worker %}
+                        {% if current_user.worker.status == 0 %}
+                            <a href="#" onclick="layer.msg('正在审核中,请等待')"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">我的工单</span></a>
+                        {% elif current_user.worker.status == -1 %}
+                            <a href="#" onclick="layer.msg('涉嫌违规,不能进入')"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">我的工单</span></a>
+                        {% else %}
+                           <a href="{{ url_for("worker_main.index") }}" ><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">我的工单</span></a>
+                        {% endif %}
+
+                    {% else %}
+                        <a href="{{url_for('admin.register_worker')}}" class="pop_layer" title="工人注册"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">工人注册</span>
+</a>
+                    {% endif %}
+                </li>
                 </ul>
             </div>
         </div>

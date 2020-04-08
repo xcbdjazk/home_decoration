@@ -1,8 +1,8 @@
-{% extends "layout.html" %}
+{% extends "layput_backend.html" %}
 {% block title %}
     333
 {% endblock %}
-{% block header %}
+{% block headers %}
     <link rel="stylesheet" href="{{ url_for('static',filename='select2/css/select2.css')  }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='select2/css/select2-bootstrap.css')  }}">
     <script src="{{ url_for('static', filename='wangEditor-3.1.1/release/wangEditor.js') }}"></script>
@@ -70,7 +70,7 @@
 {% endblock %}
 
 
-{% block text %}
+{% block texts %}
 
     <div class="container">
         <div class="row ">

@@ -1125,32 +1125,6 @@ label {
     border: 1px solid #ff6849
 }
 
-.btn-primary, .btn-primary.disabled {
-    background: #b5a8b9;
-    border: 1px solid #b5a8b9
-}
-
-.btn-primary.disabled.focus, .btn-primary.disabled:focus, .btn-primary.disabled:hover, .btn-primary.focus, .btn-primary:focus, .btn-primary:hover {
-    background: #b5a8b9;
-    opacity: .8;
-    border: 1px solid #b5a8b9
-}
-
-.btn-success, .btn-success.disabled {
-    background: #becfa6;
-    border: 1px solid #becfa6
-}
-
-.btn-success.disabled.focus, .btn-success.disabled:focus, .btn-success.disabled:hover, .btn-success.focus, .btn-success:focus, .btn-success:hover {
-    background: #becfa6;
-    opacity: .8;
-    border: 1px solid #becfa6
-}
-
-.btn-info, .btn-info.disabled {
-    background: #85b4d0;
-    border: 1px solid #85b4d0
-}
 
 .btn-info.disabled.focus, .btn-info.disabled:focus, .btn-info.disabled:hover, .btn-info.focus, .btn-info:focus, .btn-info:hover {
     background: #85b4d0;
@@ -1169,10 +1143,7 @@ label {
     border: 1px solid #cbc3ae
 }
 
-.btn-danger, .btn-danger.disabled {
-    background: #cbb2ae;
-    border: 1px solid #cbb2ae
-}
+
 
 .btn-danger.disabled.focus, .btn-danger.disabled:focus, .btn-danger.disabled:hover, .btn-danger.focus, .btn-danger:focus, .btn-danger:hover {
     background: #cbb2ae;

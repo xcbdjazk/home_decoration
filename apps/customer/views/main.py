@@ -57,6 +57,7 @@ def task_detail():
     return rt('customer_main/task_detail.html', **content)
 
 
+
 @bp.route('/add/task', methods=['GET', 'POST'])
 def task_add():
     if request.method == 'POST':
@@ -102,3 +103,10 @@ def task_delete(tid):
     if c:
         c.delete()
     return redirect(request.referrer)
+
+
+
+@bp.route('/message/list', methods=['GET', 'POST'])
+def message_list():
+    content = {}
+    return rt('customer_main/message_list.html', **content)
