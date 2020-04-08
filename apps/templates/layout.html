@@ -3,6 +3,15 @@
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='layer/theme/default/layer.css') }}">
+    <style>
+        body{
+            background-color: rgba(226, 226, 226, 0.48)!important;
+	   }
+    .text .container{
+        background-color: #fff;
+        padding: 40px;
+    }
+    </style>
     {% block header %}
     {% endblock %}
 {% endblock %}
@@ -37,7 +46,7 @@
                         {% elif current_user.worker.status == -1 %}
                             <li><a href="#" onclick="layer.msg('涉嫌违规,不能进入')">我的工单</a></li>
                         {% else %}
-                            <li><a href="" >我的工单</a></li>
+                            <li><a href="{{ url_for("worker_main.index") }}" >我的工单</a></li>
                         {% endif %}
 
                     {% else %}
@@ -45,15 +54,17 @@
                     {% endif %}
                 <li><a href="{{url_for('admin.logout')}}">退出登录</a></li>
                 {% else%}
-                <li><a href="{{url_for('admin.login')}}">登录</a></li>
+                <li><a href="{{url_for('admin.login',next=request.url)}}">登录</a></li>
                 <li><a href="{{url_for('admin.register')}}" class="pop_layer" title="注册">注册</a></li>
                 {% endif %}
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+    <div class="text">
     {% block text %}
     {% endblock %}
+    </div>
 {% endblock %}
 {% block scripts %}
     {{ super() }}

@@ -18,10 +18,10 @@ from utils.utils import ValidCodeImg
 from utils.utils import random_filename
 from bson import ObjectId
 
-bp = Blueprint("worker", __name__, url_prefix='/')
+bp = Blueprint("worker_main", __name__, url_prefix='/worker')
 
 
-@bp.route('', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET', 'POST'])
 def index():
 
-    return rt('')
+    return rt('worker_main/index.html')

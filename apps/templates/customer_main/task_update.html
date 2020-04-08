@@ -16,8 +16,8 @@
             line-height: 60px !important;
         }
 
-        .breadcrumb {
-            background-color: #fcfcfc;
+         .container .breadcrumb {
+            background-color: #f5f5f5!important;
         }
 
         .upload_file {
@@ -72,7 +72,7 @@
 
 {% block text %}
 
-    <div class="container text">
+    <div class="container">
         <div class="row ">
             <ol class="breadcrumb">
                 <li><a href="{{ url_for('customer_main.task_detail') }}">我的任务</a></li>
@@ -95,10 +95,8 @@
                             {% else %}
                                 <option value="{{ i.id }}">{{i.name}}</option>
                             {% endif %}
-
                         {% endfor %}
                     </select>
-
                 </div>
                 <div class="form-group">
                     <label for="work_time">预计工期(天)</label>
@@ -285,8 +283,6 @@
                     window.location.href = data.data.url
                 }
             })
-
-
         })
     </script>
 {% endblock %}

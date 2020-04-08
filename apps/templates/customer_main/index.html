@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "bootstrap/pagination.html" import render_pagination %}
 {% block title %}
     333
 {% endblock %}
@@ -11,6 +12,14 @@
         .table td {
             height: 60px;
             line-height: 60px !important;
+        }
+        tbody tr,.table tbody td{
+            height: 200px;
+            line-height: 200px !important;
+        }
+        td img {
+            height: 200px;
+            width: 200px;
         }
     </style>
 {% endblock %}
@@ -46,41 +55,43 @@
                 <thead>
                 <tr>
                     <th>序号</th>
-                    <th>学习组名称</th>
-                    <th>学习导师</th>
-                    <th>管理员</th>
-                    <th>学习时间</th>
-                    <th>人员总数</th>
+                    <th>标题</th>
+                    <th>工种</th>
+                    <th>工期</th>
+                    <th>价格</th>
                     <th>状态</th>
-                    <th>是否包含考试</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                </tr>
-                <tr>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                    <td>123123</td>
-                </tr>
+                {% if pagination.total == 0 %}
+                    <tr><th colspan="7" style="text-align: center">暂无相关任务</th></tr>
+                {% endif %}
+                {% for index, foo in enumerate(pagination.items, start=1) %}
+                    <tr>
+                    <td><img src="{{ foo.images[0] }}" alt=""></td>
+                    <td>{{ foo.title }}</td>
+                    <td>
+                        {{ foo.work_type_name }}
+                    </td>
+                    <td>{{ foo.work_time }} 天 </td>
+                    <td>{{ foo.price }} 元 </td>
+                    <td>{{ foo.status_name }}</td>
+                    <td>
+                            <a href="{{ url_for("customer_main.index_task_detail", tid=foo.id) }}">
+                             查看
+                            </a>
+                    </td>
+                    </tr>
+                {% endfor %}
+
                 </tbody>
             </table>
+            <div class="translation">
+                <div class="">
+                    {{ render_pagination(pagination) }}
+                </div>
+            </div>
         </div>
     </div>
 

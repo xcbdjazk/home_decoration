@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block header %}
+    <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <style>
+    .navbar{
+        z-index: 1000;
+    }
+    .navbar-default{
+        background-color: #101010;
+    }
+    .navbar-default li:hover{
+        background-color: rgba(245, 245, 245, 0.54);
+    }
+    </style>
+    {% block headers %}
+    
+    {% endblock %}
+{% endblock %}
+{% block text %}
+    <div id="wrapper">
+        <!-- Navigation -->
+
+        <!-- Left navbar-header -->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="index.html" class="waves-effect"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
+                    </li>
+                    <li>
+                        <a href="profile.html" class="waves-effect"><i class="fa fa-user fa-fw" aria-hidden="true"></i><span class="hide-menu">Profile</span></a>
+                    </li>
+                    <li>
+                        <a href="basic-table.html" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">Basic Table</span></a>
+                    </li>
+                    <li>
+                        <a href="fontawesome.html" class="waves-effect"><i class="fa fa-font fa-fw" aria-hidden="true"></i><span class="hide-menu">Icons</span></a>
+                    </li>
+                    <li>
+                        <a href="map-google.html" class="waves-effect"><i class="fa fa-globe fa-fw" aria-hidden="true"></i><span class="hide-menu">Google Map</span></a>
+                    </li>
+                    <li>
+                        <a href="blank.html" class="waves-effect"><i class="fa fa-columns fa-fw" aria-hidden="true"></i><span class="hide-menu">Blank Page</span></a>
+                    </li>
+                    <li>
+                        <a href="404.html" class="waves-effect"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i><span class="hide-menu">Error 404</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Left navbar-header end -->
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            {% block texts %}
+            
+            {% endblock %}
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+{% endblock %}

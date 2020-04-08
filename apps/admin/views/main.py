@@ -23,7 +23,6 @@ bp = Blueprint("admin", __name__, url_prefix='/')
 
 @bp.route('', methods=['GET', 'POST'])
 def index():
-
     return redirect(request.args.get('next') or url_for('customer_main.index'))
 
 
@@ -31,10 +30,10 @@ def index():
 def login():
     if request.method == 'POST':
         form = request.form
-        c:User = User.objects(Q(mobile=form.get('mobile')) | Q(mobile=form.get('username'))).first()
+        c: User = User.objects(Q(mobile=form.get('mobile')) | Q(mobile=form.get('username'))).first()
         if c and c.verify_password(form.get('password')):
             login_user(c)
-            return rest.success(data={"url": url_for('customer_main.index')})
+            return rest.success(data={"url": request.args.get('next') or url_for('customer_main.index')})
         return rest.params_error('请检查账号密码')
     return rt('admin_main/login.html')
 
@@ -60,7 +59,7 @@ def register_worker():
     wts = WorkerType.objects.all()
     content = {"wts": wts,
                "user": current_user
-    }
+               }
     return rt('admin_main/register_worker.html', **content)
 
 
@@ -122,6 +121,6 @@ def upload():
             filename
         ))
     return {
-    "errno": 0,
-    "data": urls
-}
+        "errno": 0,
+        "data": urls
+    }

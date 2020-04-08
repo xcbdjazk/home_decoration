@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    详情页面
+{% endblock %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/1.css') }}" rel="stylesheet" type="text/css">
+    <style>
+       .centerbox1 {
+            width:580px;
+            position:relative;
+            left:460px;
+            z-index:1;
+        }
+    .centerbox1 strong {
+        font-size: 20px;
+
+    }
+    .container .breadcrumb {
+            background-color: #f5f5f5!important;
+        }
+    .price1{color: red; margin-right: 40px}
+    .centerbox1 > div{
+        margin-top: 20px;
+        margin-left: 20px;
+    }
+
+   </style>
+
+{% endblock %}
+
+
+{% block text %}
+
+<div class="container">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{{ url_for('customer_main.index') }}">首页</a></li>
+            <li class="active">任务详情</li>
+        </ol>
+    </div>
+<div class="row">
+<div class="shopdetails">
+
+
+    <div id="leftbox">
+        <div id="showbox">
+            {% for foo in c.images %}
+                <img src="{{ foo }}" width="400" height="550"/>
+
+            {% endfor %}
+
+
+
+        </div><!--展示图片盒子-->
+        <div id="showsum"></div><!--展示图片里边-->
+        <p class="showpage">
+            <a href="javascript:void(0);" id="showlast"> < </a>
+            <a href="javascript:void(0);" id="shownext"> > </a>
+        </p>
+
+    </div>
+
+    <div class="centerbox1">
+        <div>
+             <h3>{{c.title}}</h3>
+        </div>
+        <hr>
+        <div style="background-color: rgba(226,226,226,0.32);padding: 10px">
+
+            <div>
+            <strong class="price1">价格：<samp>￥{{c.price}}</samp></strong>
+            <strong class="youhui1">工期：<samp>{{c.work_time}}(天)</samp></strong>
+            </div>
+
+            <div style="margin-top: 20px">
+            <strong >工人需求：<samp>{{c.work_type_name}}</samp></strong>
+            </div>
+
+        </div>
+        <hr>
+        <div style="text-align: center">
+            {% if current_user.is_authenticated %}
+                {% if current_user.worker.status != 1 %}
+                    <a href="#" class="btn btn-danger btn-lg" onclick="layer.msg('您尚未拥有工人权限')">立即沟通</a>
+                {% else %}
+                    <a href="#" class="btn btn-danger btn-lg">立即沟通</a>
+                {% endif %}
+
+            {% else %}
+                <a href="#" class="btn btn-danger btn-lg" onclick="layer.msg('请先登录')">立即沟通</a>
+            {% endif %}
+        </div>
+        <hr>
+
+        <div>
+            <h3 class="title">简介</h3>
+            <br>
+            {{ c.desc | safe }}
+        </div>
+    <div></div>
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/1.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var showproduct = {
+                "boxid": "showbox",
+                "sumid": "showsum",
+                "boxw": 400,
+                "boxh": 550,
+                "sumw": 60,//列表每个宽度,该版本中请把宽高填写成一样
+                "sumh": 60,//列表每个高度,该版本中请把宽高填写成一样
+                "sumi": 7,//列表间隔
+                "sums": 5,//列表显示个数
+                "sumsel": "sel",
+                "sumborder": 1,//列表边框，没有边框填写0，边框在css中修改
+                "lastid": "showlast",
+                "nextid": "shownext"
+            };//参数定义
+            $.ljsGlasses.pcGlasses(showproduct);//方法调用，务必在加载完后执行
+
+            $(function () {
+
+                $('.tabs a').click(function () {
+
+                    var $this = $(this);
+                    $('.panel').hide();
+                    $('.tabs a.active').removeClass('active');
+                    $this.addClass('active').blur();
+                    var panel = $this.attr("href");
+                    $(panel).show();
+                    return fasle;  //告诉浏览器  不要纸箱这个链接
+                })//end click
+
+
+                $(".tabs li:first a").click()   //web 浏览器，单击第一个标签吧
+
+
+            })//end ready
+
+            $(".centerbox li").click(function () {
+                $("li").removeClass("now");
+                $(this).addClass("now")
+            });
+        });
+    </script>
+{% endblock %}

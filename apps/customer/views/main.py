@@ -20,8 +20,22 @@ bp = Blueprint("customer_main", __name__, url_prefix='/customer')
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
+    page = request.args.get('page', 1)
+    pagination = CustomerTask.objects(status=0).order_by('-id').paginate(page, per_page=10)
+    content = dict(
+        pagination=pagination
+    )
+    return rt('customer_main/index.html', **content)
 
-    return rt('customer_main/index.html')
+
+@bp.route('/index/task/<tid>', methods=['GET', 'POST'])
+def index_task_detail(tid):
+    c = CustomerTask.objects(id=tid).first()
+    content = dict(
+        c=c
+    )
+
+    return rt('customer_main/index_task_detail.html', **content)
 
 
 @bp.route('/task/detail', methods=['GET', 'POST'])
@@ -57,8 +71,6 @@ def task_add():
         c.user = current_user.id
         c.save()
         return rest.success(data={"url": url_for(".task_detail")})
-        
-
     wts = WorkerType.objects.all()
     content = {"wts": wts}
     return rt('customer_main/task_add.html',**content)
@@ -80,7 +92,7 @@ def task_update(tid):
         return rest.success(data={"url": url_for(".task_detail")})
 
     wts = WorkerType.objects.all()
-    content = {"wts": wts,"c": c}
+    content = {"wts": wts, "c": c}
     return rt('customer_main/task_update.html', **content)
 
 
