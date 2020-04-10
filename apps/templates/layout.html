@@ -40,7 +40,7 @@
                 {% if current_user.is_authenticated %}
                 <li><a href="">欢迎 {{current_user.username}}</a></li>
                 <li><a href="{{url_for('customer_main.task_detail')}}">任务管理</a></li>
-                <li><a href="{{url_for('customer_main.message_list')}}" w="30%" h="80%" title="消息" class="pop_layer">消息(1)</a></li>
+                <li><a href="{{url_for('customer_main.message_list')}}" w="38%" h="800px" scrollbar="1" title="消息" class="pop_layer">消息(1)</a></li>
 
                 <li><a href="{{url_for('admin.logout')}}">退出登录</a></li>
                 {% else%}

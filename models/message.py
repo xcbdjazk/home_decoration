@@ -12,7 +12,7 @@ from mongoengine import ReferenceField
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 __all__ = [
-
+    'ChatMessage'
 ]
 
 
@@ -28,6 +28,8 @@ class Message(mongo.Document):
     create_time = DateTimeField()
     # 内容
     content = StringField()
+    # date
+    date = StringField()
 
 
 class ChatMessage(Message):

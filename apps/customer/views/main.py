@@ -12,6 +12,7 @@ import os
 from utils import rest
 from models.users import *
 from models.task import *
+from models.message import *
 from mongoengine.queryset import Q
 from bson import ObjectId
 
@@ -48,7 +49,7 @@ def task_detail():
         q["status"] = status
     if s:
 
-        pagination = CustomerTask.objects(Q(title__icontains=s) | Q(desc__icontains=s),user=current_user.id,  **q).paginate(page, per_page=20)
+        pagination = CustomerTask.objects(Q(title__icontains=s) | Q(desc__icontains=s), user=current_user.id,  **q).paginate(page, per_page=20)
     else:
         pagination = CustomerTask.objects(user=current_user.id, **q).paginate(page, per_page=20)
     content = dict(
@@ -105,8 +106,59 @@ def task_delete(tid):
     return redirect(request.referrer)
 
 
-
 @bp.route('/message/list', methods=['GET', 'POST'])
 def message_list():
-    content = {}
+    users = Customer.objects(id__ne=current_user.id).all()
+    content = dict(
+        users=users
+    )
     return rt('customer_main/message_list.html', **content)
+
+
+@bp.route('/message/<uid>', methods=['GET', 'POST'])
+def message(uid):
+
+    u = Customer.objects(id=uid).first()
+    if request.method == 'POST':
+        data = request.form
+        msg = data.get('message', '')
+        date = data.get('date', '')
+        cm = ChatMessage()
+        cm.send_user = current_user.id
+        cm.take_user = u.id
+        cm.content = msg
+        cm.date = date
+        cm.save()
+        return {}
+
+    messages = ChatMessage.objects(send_user=u.id, take_user=current_user.id, is_read=False).order_by('id').all()
+    messages.update(is_read=True)
+    messages = ChatMessage.objects(Q(send_user=u.id, take_user=current_user.id) |
+                                   Q(take_user=u.id, send_user=current_user.id)).order_by('id').all()
+    content = dict(
+        u=u,
+        messages=messages
+    )
+
+    return rt('customer_main/message.html', **content)
+
+
+@bp.route('/message/get/<uid>', methods=['GET', 'POST'])
+def message_get(uid):
+
+    u = Customer.objects(id=uid).first()
+    messages = ChatMessage.objects(send_user=u.id, take_user=current_user.id, is_read=False).order_by('id').all()
+    data = []
+
+    for msg in messages:
+        msg: ChatMessage
+        data.append({
+            "msg": msg.content,
+            'date': msg.date
+        })
+    messages.update(is_read=True)
+    print(data)
+
+    return rest.success(data={
+        "messages": data
+    })

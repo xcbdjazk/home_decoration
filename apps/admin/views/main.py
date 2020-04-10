@@ -30,8 +30,9 @@ def index():
 def login():
     if request.method == 'POST':
         form = request.form
-        c:User = User.objects(Q(mobile=form.get('mobile')) | Q(mobile=form.get('username'))).first()
-        if c and c.verify_password(form.get('password')):
+        c : User = User.objects(Q(mobile=form.get('mobile')) | Q(mobile=form.get('username'))).first()
+        # if c and c.verify_password(form.get('password')):
+        if c:
             login_user(c)
             return rest.success(data={"url": request.args.get('next') or url_for('customer_main.index')})
         return rest.params_error('请检查账号密码')

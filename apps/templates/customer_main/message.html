@@ -1,0 +1,191 @@
+{% extends "layout_base.html" %}
+{% block title %}
+    123
+{% endblock %}
+{% block header %}
+    <link href="{{ url_for('static', filename='css/style1.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
+    <style>
+        .activity-img img {
+            width: 40px;
+        }
+
+        .form {
+            background-color: rgb(232, 232, 232);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 40px;
+        }
+
+        .h3 {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .activity-row {
+            margin: 1em;
+            padding: 1.02em
+        }
+
+        #style-3 {
+            margin-bottom: 60px;
+            margin-top: 60px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="activity_box activity_box1" id="chat-discussion">
+        <h3 class="h3"><a href="{{ url_for('customer_main.message_list') }}" style="color: black">
+            <<< </a>{{ u.username }}</h3>
+        <div class="scrollbar" id="style-3">
+            {% for foo in messages %}
+                {% if foo.send_user ==current_user.id %}
+                    <div class="activity-row activity-row1">
+                        <div class="col-xs-2 activity-desc1"></div>
+                        <div class="col-xs-7 activity-img2">
+                            <div class="activity-desc-sub1">
+                                <h5>{{ current_user.username }}</h5>
+                                <p>{{ foo.content }}</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 activity-img"><img
+                                src='{{ url_for("static",filename='images/avatar.jpg') }}' class="img-responsive"
+                                alt=""/><span>{{ foo.date }}</span></div>
+                        <div class="clearfix"></div>
+                    </div>
+                {% else %}
+                    <div class="activity-row activity-row1">
+                        <div class="col-xs-3 activity-img"><img
+                                src='{{ url_for("static",filename='images/avatar.jpg') }}'
+                                class="img-responsive"
+                                alt=""/><span>{{ foo.date }}</span></div>
+                        <div class="col-xs-5 activity-img1">
+                            <div class="activity-desc-sub">
+                                <h5>{{ u.username }}</h5>
+                                <p>{{ foo.content }}</p>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 activity-desc1"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+        <div class="form">
+            <input type="text" placeholder="输入您的消息" required="" id="message">
+            <input type="submit" id="send_msg" value="Send"/>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="you" style="display: none">
+        <div class="activity-row activity-row1">
+            <div class="col-xs-3 activity-img"><img src='{{ url_for("static",filename='images/avatar.jpg') }}'
+                                                    class="img-responsive"
+                                                    alt=""/><span></span></div>
+            <div class="col-xs-5 activity-img1">
+                <div class="activity-desc-sub">
+                    <h5>{{ u.username }}</h5>
+                    <p></p>
+                </div>
+            </div>
+            <div class="col-xs-4 activity-desc1"></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="my" style="display: none">
+        <div class="activity-row activity-row1">
+            <div class="col-xs-2 activity-desc1"></div>
+            <div class="col-xs-7 activity-img2">
+                <div class="activity-desc-sub1">
+                    <h5>{{ current_user.username }}</h5>
+                    <p></p>
+                </div>
+            </div>
+            <div class="col-xs-3 activity-img"><img src='{{ url_for("static",filename='images/avatar.jpg') }}'
+                                                    class="img-responsive"
+                                                    alt=""/><span></span></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        $(function () {
+            $(document.body).css({
+                "overflow-x": "hidden",
+                "overflow-y": "hidden"
+            })
+            var Words = document.getElementById("style-3");
+            if (Words.scrollHeight > Words.clientHeight) {
+                //设置滚动条到最底部
+                Words.scrollTop = Words.scrollHeight;
+            }
+            let get_user_msg_url = '{{ url_for(".message_get",uid=u.id) }}'
+
+            function get_message() {
+                $.get({
+                    url: get_user_msg_url,
+                    success: function (data) {
+                        let messages = data.data.messages
+                        console.log(messages)
+                        if(messages.length > 0){
+                            for(let i=0; i<messages.length; i++){
+                                console.log(i)
+                                let this_msg = messages[i]
+                                let copy = $('.you .activity-row').clone()
+                                copy.find('p').text(this_msg['msg'])
+                                copy.find('span').text(this_msg['date'])
+                                $("#style-3").append(copy)
+                            }
+                            var Words = document.getElementById("style-3");
+                            if (Words.scrollHeight > Words.clientHeight) {
+                                //设置滚动条到最底部
+                                Words.scrollTop = Words.scrollHeight;
+                            }
+                        }
+
+                    }
+                })
+            }
+
+             setInterval(get_message, 3000)
+        })
+        $("#send_msg").click(function (even) {
+            let message = $('#message').val()
+            if (!message) {
+                parent.layer.msg('请输入聊天信息')
+                return
+            }
+            var myDate = new Date();
+
+            $('#message').val('')
+            let date = myDate.toLocaleString()
+
+            let copy = $('.my .activity-row').clone()
+            copy.find('p').text(message)
+            copy.find('span').text(date)
+            $("#style-3").append(copy)
+            $.post({
+                url: "",
+                data: {message, date},
+                success: function () {
+
+                }
+            })
+            var Words = document.getElementById("style-3");
+            if (Words.scrollHeight > Words.clientHeight) {
+                //设置滚动条到最底部
+                Words.scrollTop = Words.scrollHeight;
+            }
+        })
+
+    </script>
+{% endblock %}

@@ -5,11 +5,14 @@ function layer_pop(e) {
     let title = $(this).attr('title') || '信息'
     let w = $(this).attr('w') || '40%'
     let h = $(this).attr('h') || '60%'
+    let scrollbar = !($(this).attr("scrollbar") === '1')
+    console.log(scrollbar)
     layer.open({
       type: 2,
       title,
       shadeClose: true,
       shade: 0.8,
+      scrollbar,
       area: [w, h],
       content: url //iframe的url
     })
