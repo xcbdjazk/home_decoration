@@ -36,8 +36,8 @@
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-bell-o user1 icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>（{{ worker_count }}）</strong></h5>
-                        <span><a href="{{ url_for("admin.dashboard_worker") }}">工人审核</a></span>
+                        <h5><strong>（{{ jieyue }}）</strong></h5>
+                        <span><a href="?status=-2">工人审核</a></span>
                     </div>
                 </div>
             </div>
@@ -45,8 +45,17 @@
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>（{{ task_count }}）</strong></h5>
-                        <span><a href="?status=1">任务查看</span>
+                        <h5><strong>（{{ doing }}）</strong></h5>
+                        <span><a href="?status=1">进行的任务</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 widget">
+                <div class="r3_counter_box">
+                    <i class="pull-left fa fa-users dollar2 icon-rounded"></i>
+                    <div class="stats">
+                        <h5><strong>（{{ succ }}）</strong></h5>
+                        <span><a href="?status=2">已完成的任务</a></span>
                     </div>
                 </div>
             </div>

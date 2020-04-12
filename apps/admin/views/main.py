@@ -12,6 +12,7 @@ from flask_login import current_user
 from config import config
 import os
 from models.users import *
+from models.task import *
 from mongoengine.queryset import Q
 from utils import rest
 from utils.utils import ValidCodeImg
@@ -125,3 +126,29 @@ def upload():
         "errno": 0,
         "data": urls
     }
+
+
+@bp.route('dashboard', methods=['GET', 'POST'])
+def dashboard():
+    worker_count = Worker.objects(status=0).count()
+    task_count = CustomerTask.objects(status=0).count()
+    content = {
+        'worker_count': worker_count,
+        'task_count': task_count,
+
+    }
+    return rt('admin_main/index.html', **content)
+
+
+
+@bp.route('dashboard/worker', methods=['GET', 'POST'])
+def dashboard_worker():
+
+    worker_count = Worker.objects(status=0).count()
+    task_count = CustomerTask.objects(status=0).count()
+    content = {
+        'worker_count':worker_count,
+        'task_count':task_count,
+
+    }
+    return rt('admin_main/index.html', **content)

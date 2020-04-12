@@ -5,18 +5,20 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
     <style>
-    .navbar{
-        z-index: 1000;
-    }
-    .navbar-default{
-        background-color: #222;
-    }
-    .navbar-default li:hover{
-        background-color: rgba(245, 245, 245, 0.54);
-    }
+        .navbar {
+            z-index: 1000;
+        }
+
+        .navbar-default {
+            background-color: #222;
+        }
+
+        .navbar-default li:hover {
+            background-color: rgba(245, 245, 245, 0.54);
+        }
     </style>
     {% block headers %}
-    
+
     {% endblock %}
 {% endblock %}
 {% block text %}
@@ -28,25 +30,42 @@
             <div class="sidebar-nav navbar-collapse slimscrollsidebar">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="#" class="waves-effect"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i><span class="hide-menu">Dashboard</span></a>
+                        <a href="#" class="waves-effect"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i><span
+                                class="hide-menu">Dashboard</span></a>
+                    </li>
+                    {% if current_user.is_admin %}
+                        <li><a href="{{ url_for('admin.dashboard_worker') }}" class="waves-effect"><i
+                                class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">工人审核</span></a></li>
+                    {% else %}
+                    <li>
+                        <a href="{{ url_for('customer_main.task_detail') }}" class="waves-effect"><i
+                                class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">任务管理</span></a>
                     </li>
                     <li>
-                        <a href="{{url_for('customer_main.task_detail')}}" class="waves-effect"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">任务管理</span></a></li>
-                    <li>
-                    {% if current_user.is_worker %}
-                        {% if current_user.worker.status == 0 %}
-                            <a href="#" onclick="layer.msg('正在审核中,请等待')"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">我的工单</span></a>
-                        {% elif current_user.worker.status == -1 %}
-                            <a href="#" onclick="layer.msg('涉嫌违规,不能进入')"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">我的工单</span></a>
+                        {% if current_user.is_worker %}
+                            {% if current_user.worker.status == 0 %}
+                                <a href="#" onclick="layer.msg('正在审核中,请等待')"><i class="fa fa-table fa-fw"
+                                                                                aria-hidden="true"></i><span
+                                        class="hide-menu">我的工单</span></a>
+                            {% elif current_user.worker.status == -1 %}
+                                <a href="#" onclick="layer.msg('涉嫌违规,不能进入')"><i class="fa fa-table fa-fw"
+                                                                                aria-hidden="true"></i><span
+                                        class="hide-menu">我的工单</span></a>
+                            {% else %}
+                                <a href="{{ url_for("worker_main.index") }}"><i class="fa fa-table fa-fw"
+                                                                                aria-hidden="true"></i><span
+                                        class="hide-menu">我的工单</span></a>
+                            {% endif %}
+
                         {% else %}
-                           <a href="{{ url_for("worker_main.index") }}" ><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">我的工单</span></a>
+                            <a href="{{ url_for('admin.register_worker') }}" class="pop_layer" title="工人注册"><i
+                                    class="fa fa-table fa-fw" aria-hidden="true"></i><span class="hide-menu">工人注册</span>
+                            </a>
                         {% endif %}
 
-                    {% else %}
-                        <a href="{{url_for('admin.register_worker')}}" class="pop_layer" title="工人注册"><i class="fa fa-table fa-fw" aria-hidden="true"></i><span  class="hide-menu">工人注册</span>
-</a>
+                    </li>
                     {% endif %}
-                </li>
+
                 </ul>
             </div>
         </div>
@@ -54,7 +73,7 @@
         <!-- Page Content -->
         <div id="page-wrapper">
             {% block texts %}
-            
+
             {% endblock %}
         </div>
         <!-- /#page-wrapper -->

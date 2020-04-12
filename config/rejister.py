@@ -35,13 +35,20 @@ def permission(endpoint):
 
 def register_data(app):
     from models.users import WorkerType
-    path = os.path.join(config.base_dir, 'apps', 'user_file')
-    if not os.path.isdir(path):
+    from models.users import Admin
+    path = os.path.join(config.base_dir, 'apps', 'static', 'user_file')
+    if not os.path.exists(path):
         os.mkdir(path)
     with app.app_context() as c:
-
+        if not Admin.objects.count():
+            a = Admin()
+            a.mobile = 'imsuperuser'
+            a.username = 'admin'
+            a.password = 'abc123'
+            a.save()
         if WorkerType.objects.count():
-            return
-        for i in ['修理工', '装修工']:
-            WorkerType(name=i).save()
+            pass
+        else:
+            for i in ['修理工', '装修工']:
+                WorkerType(name=i).save()
         print('register_data')
