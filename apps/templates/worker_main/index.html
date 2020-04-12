@@ -1,40 +1,45 @@
 {% extends "layput_backend.html" %}
-
+{% from "bootstrap/pagination.html" import render_pagination %}
 {% block headers %}
     <link href="{{ url_for('static', filename='css/style1.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
-
+    <style>
+    .content{
+        margin-top: 20px;
+        background-color: #fff;
+    }
+    </style>
 {% endblock %}
 
 {% block texts %}
 
 
     <div class="main-page">
-        <div class="col_3">
+{#        <div class="col_3">#}
+{#            <div class="col-md-3 widget widget1">#}
+{#                <div class="r3_counter_box">#}
+{#                    <i class="pull-left fa  fa-envelope-o icon-rounded"></i>#}
+{#                    <div class="stats">#}
+{#                        <h5><strong>$452</strong></h5>#}
+{#                        <span>Total Revenue</span>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-md-3 widget widget1">#}
+{#                <div class="r3_counter_box">#}
+{#                    <i class="pull-left fa fa-laptop user1 icon-rounded"></i>#}
+{#                    <div class="stats">#}
+{#                        <h5><strong>$1019</strong></h5>#}
+{#                        <span>Online Revenue</span>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
             <div class="col-md-3 widget widget1">
                 <div class="r3_counter_box">
-                    <i class="pull-left fa  fa-envelope-o icon-rounded"></i>
+                    <i class="pull-left fa fa-bell-o user1 icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>$452</strong></h5>
-                        <span>Total Revenue</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 widget widget1">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-laptop user1 icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong>$1019</strong></h5>
-                        <span>Online Revenue</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 widget widget1">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-money user2 icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong>$1012</strong></h5>
-                        <span>Expenses</span>
+                        <h5><strong>（{{ jieyue }}）</strong></h5>
+                        <span><a href="?status=-2">解约待办</a></span>
                     </div>
                 </div>
             </div>
@@ -42,8 +47,8 @@
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>$450</strong></h5>
-                        <span>Expenditure</span>
+                        <h5><strong>（{{ doing }}）</strong></h5>
+                        <span><a href="?status=1">进行的任务</span>
                     </div>
                 </div>
             </div>
@@ -51,148 +56,61 @@
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-users dollar2 icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>1450</strong></h5>
-                        <span>Total Users</span>
+                        <h5><strong>（{{ succ }}）</strong></h5>
+                        <span><a href="?status=2">已完成的任务</a></span>
                     </div>
                 </div>
             </div>
             <div class="clearfix"></div>
         </div>
-        <div class="col_1">
-            <div class="col-md-4 span_8">
-                <div class="activity_box">
-                    <h2>Inbox</h2>
-                    <div class="scrollbar" id="style-1">
-                        <div class="activity-row">
-                            <div class="col-xs-3 activity-img"><img src='images/1.jpg' class="img-responsive" alt=""/>
-                            </div>
-                            <div class="col-xs-7 activity-desc">
-                                <h5><a href="#">Michael Chris</a></h5>
-                                <p>Hey ! There I'm available.</p>
-                            </div>
-                            <div class="col-xs-2 activity-desc1"><h6>12:05 PM</h6></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="activity-row">
-                            <div class="col-xs-3 activity-img"><img src='images/4.jpg' class="img-responsive" alt=""/>
-                            </div>
-                            <div class="col-xs-7 activity-desc">
-                                <h5><a href="#">Alexander</a></h5>
-                                <p>Hey ! There I'm available.</p>
-                            </div>
-                            <div class="col-xs-2 activity-desc1"><h6>12:06 PM</h6></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="activity-row">
-                            <div class="col-xs-3 activity-img"><img src='images/3.jpg' class="img-responsive" alt=""/>
-                            </div>
-                            <div class="col-xs-7 activity-desc">
-                                <h5><a href="#">Daniel Lucas</a></h5>
-                                <p>Hey ! There I'm available.</p>
-                            </div>
-                            <div class="col-xs-2 activity-desc1"><h6>01:30 PM</h6></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="activity-row">
-                            <div class="col-xs-3 activity-img"><img src='images/2.jpg' class="img-responsive" alt=""/>
-                            </div>
-                            <div class="col-xs-7 activity-desc">
-                                <h5><a href="#">Jackson Jacob</a></h5>
-                                <p>Hey ! There I'm available.</p>
-                            </div>
-                            <div class="col-xs-2 activity-desc1"><h6>01:50 PM</h6></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="activity-row">
-                            <div class="col-xs-3 activity-img"><img src='images/1.jpg' class="img-responsive" alt=""/>
-                            </div>
-                            <div class="col-xs-7 activity-desc">
-                                <h5><a href="#">David Samuel</a></h5>
-                                <p>Hey ! There I'm available.</p>
-                            </div>
-                            <div class="col-xs-2 activity-desc1"><h6>12:20 PM</h6></div>
-                            <div class="clearfix"></div>
-                        </div>
+        <div class="content">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>标题</th>
+                    <th>工种</th>
+                    <th>工期</th>
+                    <th>发布人</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if pagination.total == 0 %}
+                    <tr><th colspan="7" style="text-align: center">暂无相关任务</th></tr>
+                {% endif %}
+                {% for index, foo in enumerate(pagination.items, start=1) %}
+                    <tr>
+                    <th>{{ (request.args.get('page',1)|int - 1 ) * 20 + index }}</th>
+                    <th>{{ foo.title }}</th>
+                    <th>
+                        {{ foo.work_type_name }}
+                    </th>
+                    <th>{{ foo.work_time }} 天 </th>
+                    <th><a  href="{{url_for('customer_main.message',uid=foo.user.id)}}" w="38%" h="700px" scrollbar="1" title="消息" class="pop_layer">{{ foo.user.username }} </a></th>
+                    <th>{{ foo.status_name }}</th>
+                    <th>
+                        {% if foo.status == -2 %}
+                            <a href="{{ url_for("worker_main.task_jieyue", tid=foo.id) }}" class="delete"
+                            desc="{{ foo.jieyue_desc }} <br>(请优先和主家确认)">
+                             确认解约
+                            </a>
+                        {% endif %}
 
-                        <div class="activity-row">
-                            <div class="col-xs-3 activity-img"><img src='images/4.jpg' class="img-responsive" alt=""/>
-                            </div>
-                            <div class="col-xs-7 activity-desc">
-                                <h5><a href="#">laura Smith</a></h5>
-                                <p>Hey ! There I'm available.</p>
-                            </div>
-                            <div class="col-xs-2 activity-desc1"><h6>12:50 PM</h6></div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                    <form action="#" method="post">
-                        <input type="text" value="Enter your text" onfocus="this.value = '';"
-                               onblur="if (this.value == '') {this.value = 'Enter your text';}" required="">
-                        <input type="submit" value="Submit"/>
-                    </form>
+
+
+                    </th>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+            <div class="translation">
+                <div class="">
+                    {{ render_pagination(pagination) }}
                 </div>
             </div>
-            <div class="col-md-4 span_8">
-                <div class="activity_box activity_box1">
-                    <h3>chat</h3>
-                    <div class="scrollbar" id="style-3">
-                        <div class="activity-row activity-row1">
-                            <div class="col-xs-3 activity-img"><img src='images/1.jpg' class="img-responsive"
-                                                                    alt=""/><span>06:01 AM</span></div>
-                            <div class="col-xs-5 activity-img1">
-                                <div class="activity-desc-sub">
-                                    <h5>Michael Chris</h5>
-                                    <p>Hello ! this is Michael chris</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-4 activity-desc1"></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="activity-row activity-row1">
-                            <div class="col-xs-2 activity-desc1"></div>
-                            <div class="col-xs-7 activity-img2">
-                                <div class="activity-desc-sub1">
-                                    <h5>Alexander</h5>
-                                    <p>Hi,How are you ? What about our next meeting?</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3 activity-img"><img src='images/3.jpg' class="img-responsive"
-                                                                    alt=""/><span>06:02 AM</span></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="activity-row activity-row1">
-                            <div class="col-xs-3 activity-img"><img src='images/1.jpg' class="img-responsive"
-                                                                    alt=""/><span>06:05 AM</span></div>
-                            <div class="col-xs-5 activity-img1">
-                                <div class="activity-desc-sub">
-                                    <h5>Michael Chris</h5>
-                                    <p>Yeah fine, Hope you the same</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-4 activity-desc1"></div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="activity-row activity-row1">
-                            <div class="col-xs-2 activity-desc1"></div>
-                            <div class="col-xs-7 activity-img2">
-                                <div class="activity-desc-sub1">
-                                    <h5>Alexander</h5>
-                                    <p>Wow that's great</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-3 activity-img"><img src='images/3.jpg' class="img-responsive"
-                                                                    alt=""/><span>06:20 PM</span></div>
-                            <div class="clearfix"></div>
-                        </div>
-                    </div>
-                    <form action="#" method="post">
-                        <input type="text" value="Enter your text" onfocus="this.value = '';"
-                               onblur="if (this.value == '') {this.value = 'Enter your text';}" required="">
-                        <input type="submit" value="Send"/>
-                    </form>
-                </div>
-            </div>
-            <div class="clearfix"></div>
         </div>
 
 </div>

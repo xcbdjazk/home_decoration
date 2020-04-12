@@ -1,6 +1,5 @@
-
-
-
+from . import config
+import os
 def register_jinja(app, has_menu=False):
     result = {}
     result['static'] = static
@@ -36,6 +35,9 @@ def permission(endpoint):
 
 def register_data(app):
     from models.users import WorkerType
+    path = os.path.join(config.base_dir, 'apps', 'user_file')
+    if not os.path.isdir(path):
+        os.mkdir(path)
     with app.app_context() as c:
 
         if WorkerType.objects.count():

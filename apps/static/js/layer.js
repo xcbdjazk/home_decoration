@@ -23,7 +23,9 @@ $(".delete").click(function (event) {
             event.preventDefault();
             var url = $(this).attr("url") || $(this).attr("href")
             let title = $(this).attr('title') || '信息'
-            layer.confirm('确定删除？', {
+            let desc = $(this).attr('desc') || '确定删除'
+
+            layer.confirm(desc, {
                 title,
                 btn: ['确定', '取消'] //按钮
 
@@ -32,12 +34,21 @@ $(".delete").click(function (event) {
                     url: url,
                     type: "get",
                     success: function (data) {
-                        if (data.code === 500) {
+                        if (data.code !== 200) {
                             layer.msg(data.message, {icon: 2});
                         }else {
-                            layer.msg('删除成功', {icon: 1});
+                            layer.msg(data.message ||'删除成功', {icon: 1});
                             setTimeout(function () {
-                                window.location.reload()
+                                if(data.data){
+                                    if (data.data.url){
+                                        window.location.href=data.data.url
+                                    }else{
+                                        window.location.reload()
+                                    }
+                                }else{
+                                    window.location.reload()
+                                }
+
                             }, 2000)
                         }
                     }

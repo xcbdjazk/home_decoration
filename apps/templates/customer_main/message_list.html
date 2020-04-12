@@ -5,7 +5,11 @@
 {% block header %}
     <link href="{{ url_for('static', filename='css/style1.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
-
+    <style>
+        .activity-img img {
+            width: 50px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -15,12 +19,12 @@
                         {% for foo in users %}
                         <div class="activity-row">
 
-                            <div class="col-xs-3 activity-img"><img src='images/1.jpg' class="img-responsive" alt=""/>
+                            <div class="col-xs-3 activity-img"><img src='{{ url_for("static",filename='images/avatar.jpg') }}' class="img-responsive" alt=""/>
                             </div>
 
                             <div class="col-xs-7 activity-desc">
                                 <a href="{{ url_for('customer_main.message',uid=foo.id) }}">
-                                    <h5>foo{{ foo.username }}</h5>
+                                    <h5>{{ foo.username }}</h5>
                                     <p>Hey ! There I'm available.</p>
                                 </a>
                             </div>

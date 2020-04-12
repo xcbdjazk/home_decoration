@@ -106,7 +106,7 @@ class Worker(mongo.Document):
         self.attitude_score = self.format_float(all_attitude_score / (self.service_count + 1))
         self.service_count += 1
         self.avg_score = self.format_float(
-            (self.jishu_score + self.time_score + self.attitude_score) / 3 / self.service_count)
+            (self.jishu_score + self.time_score + self.attitude_score) / 3 )
         self.save()
 
 
