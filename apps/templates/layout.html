@@ -39,7 +39,7 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
                 <li><a href="">欢迎 {{current_user.username}}</a></li>
-                <li><a href="{{url_for('customer_main.task_detail') if not current_user.is_admin else url_for('admin.dashboard')}}">{{ '管理' if current_user.is_admin else "我的工单"  }}</a></li>
+                <li><a href="{{url_for('customer_main.task_detail') if not current_user.is_admin else url_for('admin.dashboard')}}">管理</a></li>
                 <li><a href="{{url_for('customer_main.message_list')}}" w="38%" h="700px" scrollbar="1" title="消息" class="pop_layer message">消息</a></li>
 
                 <li><a href="{{url_for('admin.logout')}}">退出登录</a></li>

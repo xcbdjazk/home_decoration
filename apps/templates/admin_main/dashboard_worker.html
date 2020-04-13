@@ -4,63 +4,80 @@
     <link href="{{ url_for('static', filename='css/style1.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
     <style>
-    .content{
+    .main-page{
+        min-height: 800px;
         margin-top: 20px;
         background-color: #fff;
+    }
+    .btns{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 40px;
     }
     </style>
 {% endblock %}
 
 {% block texts %}
 <div class="main-page">
-{#        <div class="col_3">#}
-{#            <div class="col-md-3 widget widget1">#}
-{#                <div class="r3_counter_box">#}
-{#                    <i class="pull-left fa  fa-envelope-o icon-rounded"></i>#}
-{#                    <div class="stats">#}
-{#                        <h5><strong>$452</strong></h5>#}
-{#                        <span>Total Revenue</span>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-3 widget widget1">#}
-{#                <div class="r3_counter_box">#}
-{#                    <i class="pull-left fa fa-laptop user1 icon-rounded"></i>#}
-{#                    <div class="stats">#}
-{#                        <h5><strong>$1019</strong></h5>#}
-{#                        <span>Online Revenue</span>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-            <div class="col-md-3 widget widget1">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-bell-o user1 icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong>（{{ jieyue }}）</strong></h5>
-                        <span><a href="?status=-2">工人审核</a></span>
-                    </div>
-                </div>
+    <br>
+    <div class="btns">
+        <a href="?status=0"  class="btn btn-primary">待审核</a>
+<!-- 表示一个成功的或积极的动作 -->
+        <a href="?status=-1"  class="btn btn-success">违规</a>
+    </div>
+    <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>姓名</th>
+                    <th>工种</th>
+                    <th>工龄</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if worker.total == 0 %}
+                    <tr><th colspan="7" style="text-align: center">暂无人员信息</th></tr>
+                {% endif %}
+                {% for index, foo in enumerate(worker.items, start=1) %}
+                    <tr>
+                    <th>{{ (request.args.get('page',1)|int - 1 ) * 20 + index }}</th>
+                    <th><a  href="{{url_for('customer_main.message',uid=foo.user.id)}}" w="38%" h="700px" scrollbar="1" title="消息" class="pop_layer">{{ foo.user.username }} </a></th>
+                    <th>
+                        {{ foo.work_type_name }}
+                    </th>
+                    <th>{{ foo.work_year }} 年 </th>
+                    <th>{{ foo.status_name }}</th>
+                    <th>
+                        {% if foo.status == 0 %}
+                            <a href="{{ url_for(".worker_verify", wid=foo.id, status=1) }}" class="delete"
+                                desc="请确认!!">
+                                 通过审核
+                            </a>
+                            {% elif foo.status == 1 %}
+                            <a href="{{ url_for(".worker_verify", wid=foo.id, status=-1) }}" class="delete"
+                                desc="请确认!!">
+                                 标记为违规
+                            </a>
+                            {% elif foo.status == -1 %}
+                            <a href="{{ url_for(".worker_verify", wid=foo.id, status=1) }}" class="delete"
+                                desc="请确认!!">
+                                 取消违规
+                            </a>
+                        {% endif %}
+                    </th>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+<div class="translation">
+            <div class="">
+                {{ render_pagination(worker) }}
             </div>
-            <div class="col-md-3 widget widget1">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong>（{{ doing }}）</strong></h5>
-                        <span><a href="?status=1">进行的任务</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 widget">
-                <div class="r3_counter_box">
-                    <i class="pull-left fa fa-users dollar2 icon-rounded"></i>
-                    <div class="stats">
-                        <h5><strong>（{{ succ }}）</strong></h5>
-                        <span><a href="?status=2">已完成的任务</a></span>
-                    </div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
         </div>
+</div>
 
 
 {% endblock %}

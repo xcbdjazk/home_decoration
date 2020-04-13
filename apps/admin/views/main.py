@@ -140,15 +140,51 @@ def dashboard():
     return rt('admin_main/index.html', **content)
 
 
-
 @bp.route('dashboard/worker', methods=['GET', 'POST'])
 def dashboard_worker():
-
-    worker_count = Worker.objects(status=0).count()
-    task_count = CustomerTask.objects(status=0).count()
+    page = request.args.get('page', 1, type=int)
+    status:str = request.args.get('status')
+    query = {}
+    if status:
+        query['status'] = int(status) if status.isdigit() else -1000
+    worker = Worker.objects(**query).paginate(page, per_page=20)
     content = {
-        'worker_count':worker_count,
-        'task_count':task_count,
-
+        'worker': worker,
     }
-    return rt('admin_main/index.html', **content)
+    return rt('admin_main/dashboard_worker.html', **content)
+
+
+@bp.route('dashboard/task', methods=['GET', 'POST'])
+def dashboard_task():
+    if request.method == 'POST':
+        data = request.form
+        if WorkerType.objects(name=data['text']).count():
+            return rest.params_error('工种已经存在')
+        WorkerType(name=data['text']).save()
+        return rest.success('添加成功')
+    page = request.args.get('page', 1, type=int)
+    status: str = request.args.get('status')
+    query = {}
+    if status:
+        query['status'] = int(status) if status.isdigit() else -1000
+    task = CustomerTask.objects(**query).paginate(page, per_page=20)
+    content = {
+        'task': task,
+    }
+    return rt('admin_main/dashboard_task.html', **content)
+
+
+@bp.route('dashboard/worker/verify/<wid>/<status>', methods=['GET', 'POST'])
+def worker_verify(wid, status):
+    worker = Worker.objects(id=wid).first()
+    worker.status = int(status)
+    worker.save()
+    return rest.success('操作成功')
+
+
+@bp.route('dashboard/task/verify/<tid>/<status>', methods=['GET', 'POST'])
+def task_verify(tid, status):
+    worker = CustomerTask.objects(id=tid).first()
+    worker.status = int(status)
+    worker.save()
+    return rest.success('操作成功')

@@ -81,7 +81,7 @@
         <hr>
         <div style="text-align: center">
             {% if current_user.is_authenticated %}
-                {% if current_user.worker.status != 1 %}
+                {% if not current_user.is_worker or current_user.worker.status != 1 %}
                     <a href="#" class="btn btn-danger btn-lg" onclick="layer.msg('您尚未拥有工人权限')">立即沟通</a>
                 {% else %}
                     <a  href="{{url_for('customer_main.message',uid=c.user.id)}}" w="38%" h="700px" scrollbar="1" title="消息" class="btn btn-danger btn-lg pop_layer">立即沟通</a>

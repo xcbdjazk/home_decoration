@@ -1,6 +1,7 @@
 # -*- coding:utf8 -*-
 import os
 
+
 class Config(object):
     DEBUG = True
     SECRET_KEY = "home_decoration"

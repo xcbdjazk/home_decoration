@@ -1,0 +1,113 @@
+{% extends "layput_backend.html" %}
+{% from "bootstrap/pagination.html" import render_pagination %}
+{% block headers %}
+    <link href="{{ url_for('static', filename='css/style1.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
+    <style>
+    .main-page{
+        min-height: 800px;
+        margin-top: 20px;
+        background-color: #fff;
+    }
+    .btns{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 40px;
+    }
+    </style>
+{% endblock %}
+
+{% block texts %}
+<div class="main-page">
+    <br>
+    <div class="btns">
+        <a href="?status=0"  class="btn btn-primary">发布中</a>
+        <a href="?status=-1"  class="btn btn-success">违规</a>
+        <a href="#"  class=" add_work_type btn btn-info">添加工种</a>
+    </div>
+    <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>标题</th>
+                    <th>工种</th>
+                    <th>工期</th>
+                    <th>发布人</th>
+                    <th>参与人</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if task.total == 0 %}
+                    <tr><th colspan="7" style="text-align: center">暂无人员信息</th></tr>
+                {% endif %}
+                {% for index, foo in enumerate(task.items, start=1) %}
+                    <tr>
+                    <th>{{ (request.args.get('page',1)|int - 1 ) * 20 + index }}</th>
+                    <th>{{ foo.title }}</th>
+                    <th>{{ foo.work_type_name }}</th>
+                    <th>
+                        {{ foo.work_time }} 天
+                    </th>
+                    <th><a  href="{{url_for('customer_main.message',uid=foo.user.id)}}" w="38%" h="700px" scrollbar="1" title="消息" class="pop_layer">{{ foo.user.username }} </a></th>
+                    {% if foo.join_user %}
+                            <th><a  href="{{url_for('customer_main.message',uid=foo.join_user.id)}}" w="38%" h="700px" scrollbar="1" title="消息" class="pop_layer">{{ foo.join_user.username }} </a></th>
+                    {% else %}
+                            <th></th>
+
+                    {% endif %}
+                    <th>{{ foo.status_name }}</th>
+                    <th>
+                        {% if foo.status == 0 %}
+                            <a href="{{ url_for(".task_verify", tid=foo.id, status=-1) }}" class="delete"
+                                desc="请确认!!">
+                                 标记为违规
+                            </a>
+                            {% elif foo.status == 1 %}
+
+                            {% elif foo.status == -1 %}
+                            <a href="{{ url_for(".task_verify", tid=foo.id, status=0) }}" class="delete"
+                                desc="请确认!!">
+                                 取消违规
+                            </a>
+                        {% endif %}
+                    </th>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+<div class="translation">
+            <div class="">
+                {{ render_pagination(task) }}
+            </div>
+        </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block script%}
+    <script>
+    $(".add_work_type").click(function (event) {
+            event.preventDefault();
+            layer.prompt({title: '请填写新增的工种', formType: 0}, function (text, index) {
+
+                $.post({
+                    url: '',
+                    data: {'text': text},
+                    success: function (data) {
+                        layer.msg(data.message)
+                        if (data.code === 200){
+                                layer.close(index);
+                        }
+                    }
+
+                })
+
+            })
+        })
+    </script>
+{% endblock %}

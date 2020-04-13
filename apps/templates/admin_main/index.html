@@ -36,8 +36,8 @@
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-bell-o user1 icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>（{{ worker_count }}）</strong></h5>
-                        <span><a href="{{ url_for("admin.dashboard_worker") }}">工人审核</a></span>
+                        <h5><strong>待审核（{{ worker_count }}）</strong></h5>
+                        <span><a href="{{ url_for("admin.dashboard_worker",status=0) }}">工人管理</a></span>
                     </div>
                 </div>
             </div>
@@ -45,8 +45,8 @@
                 <div class="r3_counter_box">
                     <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
                     <div class="stats">
-                        <h5><strong>（{{ task_count }}）</strong></h5>
-                        <span><a href="?status=1">任务查看</span>
+                        <h5><strong>进行中（{{ task_count }}）</strong></h5>
+                        <span><a href="{{ url_for("admin.dashboard_task") }}">任务查看</a></span>
                     </div>
                 </div>
             </div>

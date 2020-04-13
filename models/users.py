@@ -93,6 +93,21 @@ class Worker(mongo.Document):
     def save_self(self):
         pass
 
+    @property
+    def work_type_name(self):
+        return ','.join((i.name for i in self.work_type))
+
+    @property
+    def status_name(self):
+        if self.status == 0:
+            return '审核中'
+
+        if self.status == 1:
+            return '正常'
+        if self.status == -1:
+            return '违规'
+
+
     @staticmethod
     def format_float(f: float):
         return float("%.1f" % f)
