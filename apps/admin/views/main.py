@@ -50,7 +50,7 @@ def register_worker():
             return rest.params_error('请选择工种')
         if not data.get('work_year'):
             return rest.params_error('请填写工龄')
-        worker = Worker.objects.first()
+        worker = Worker.objects(user=current_user.id).first()
         if not worker:
             worker = Worker()
         worker.user = current_user.id
@@ -118,10 +118,11 @@ def upload():
     for i in request.files.getlist('file'):
         filename = random_filename(i.filename)
         i.save(os.path.join(base_dir, filename))
-        urls.append(os.path.join(
+        url = os.path.join(
             '/static', 'user_file',
             filename
-        ))
+        ).replace('\\', '/')
+        urls.append(url)
     return {
         "errno": 0,
         "data": urls

@@ -30,7 +30,7 @@ def index():
     if work_type:
         query['work_type'] = work_type
     if k:
-        pagination = CustomerTask.objects(Q(title__icontains=k) | Q(desc__icontains=k),**query).paginate(page, per_page=20)
+        pagination = CustomerTask.objects(Q(title__icontains=k) | Q(desc__icontains=k),**query).order_by('-id').paginate(page, per_page=20)
     else:
         pagination = CustomerTask.objects(**query).order_by('-id').paginate(page, per_page=10)
 
@@ -138,7 +138,7 @@ def task_delete(tid):
 
 @bp.route('/message/list', methods=['GET', 'POST'])
 def message_list():
-    users = Customer.objects(id__ne=current_user.id).all()
+    users = User.objects(id__ne=current_user.id).all()
     content = dict(
         users=users
     )
@@ -158,7 +158,7 @@ def message_count():
 
 @bp.route('/message/<uid>', methods=['GET', 'POST'])
 def message(uid):
-    u = Customer.objects(id=uid).first()
+    u = User.objects(id=uid).first()
     if request.method == 'POST':
         data = request.form
         msg = data.get('message', '')
@@ -185,7 +185,7 @@ def message(uid):
 
 @bp.route('/message/get/<uid>', methods=['GET', 'POST'])
 def message_get(uid):
-    u = Customer.objects(id=uid).first()
+    u = User.objects(id=uid).first()
     messages = ChatMessage.objects(send_user=u.id, take_user=current_user.id, is_read=False).order_by('id').all()
     data = []
 
