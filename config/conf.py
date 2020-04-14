@@ -9,7 +9,7 @@ class Config(object):
 
     # mongoDB
     MONGODB_DB = 'home_decoration'
-    MONGODB_HOST = 'mongo'
+    MONGODB_HOST = '127.0.0.1'
     MONGODB_PORT = 27017
 
     BOOTSTRAP_SERVE_LOCAL = True
