@@ -30,7 +30,8 @@ def index():
     if work_type:
         query['work_type'] = work_type
     if k:
-        pagination = CustomerTask.objects(Q(title__icontains=k) | Q(desc__icontains=k),**query).order_by('-id').paginate(page, per_page=20)
+        pagination = CustomerTask.objects(Q(title__icontains=k) | Q(desc__icontains=k), **query).order_by(
+            '-id').paginate(page, per_page=20)
     else:
         pagination = CustomerTask.objects(**query).order_by('-id').paginate(page, per_page=10)
 
@@ -139,8 +140,25 @@ def task_delete(tid):
 @bp.route('/message/list', methods=['GET', 'POST'])
 def message_list():
     users = User.objects(id__ne=current_user.id).all()
+
+    def get_last_message(user):
+        cm: ChatMessage = ChatMessage.objects(send_user=user.id, take_user=current_user.id).order_by(
+            '-create_time').first()
+        return cm.content if cm else '', ChatMessage.objects(send_user=user.id, take_user=current_user.id,
+                                                             is_read=False).count()
+
+    send_user_not_read = ChatMessage.objects(take_user=current_user.id, is_read=False).order_by(
+        '-create_time').distinct('send_user')
+
+    send_user_read = ChatMessage.objects(take_user=current_user.id, send_user__not__in=send_user_not_read).order_by(
+        '-create_time').distinct('send_user')
+    take_user = ChatMessage.objects(send_user=current_user.id, send_user__not__in=send_user_not_read).order_by(
+        '-create_time').distinct('take_user')
+    user = send_user_not_read + send_user_read + take_user
+    users = sorted(User.objects(id__in=user).all(), key=lambda x: user.index(x.id))
     content = dict(
-        users=users
+        users=users,
+        get_last_message=get_last_message,
     )
     return rt('customer_main/message_list.html', **content)
 
@@ -196,11 +214,11 @@ def message_get(uid):
             'date': msg.date
         })
     messages.update(is_read=True)
-    print(data)
 
     return rest.success(data={
         "messages": data
     })
+
 
 @bp.route('/rate/<tid>', methods=['GET', 'POST'])
 def rate(tid):

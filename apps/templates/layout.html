@@ -60,9 +60,9 @@
     {{ super() }}
     <script src="{{ url_for('static', filename='layer/layer.js') }}"></script>
     <script src="{{ url_for('static', filename='js/layer.js') }}"></script>
-    <script>
 
-    $(function () {
+    <script>
+    function watch(){
         $.get({
             url:'{{ url_for("customer_main.message_count") }}',
             success:function (data) {
@@ -74,6 +74,10 @@
 
             }
         })
+    }
+    $(function () {
+        watch();
+        setInterval(watch, 15000)
     })
     </script>
     {% block script %}

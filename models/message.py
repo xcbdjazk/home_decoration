@@ -11,10 +11,10 @@ from mongoengine import DENY
 from mongoengine import ReferenceField
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
+import datetime
 __all__ = [
     'ChatMessage'
 ]
-
 
 
 class Message(mongo.Document):
@@ -25,7 +25,7 @@ class Message(mongo.Document):
     # 接收者
     take_user = ObjectIdField(required=True)
     # 创建时间
-    create_time = DateTimeField()
+    create_time = DateTimeField(default=datetime.datetime.now)
     # 内容
     content = StringField()
     # date

@@ -9,6 +9,17 @@
         .activity-img img {
             width: 50px;
         }
+        .red_tip{
+            display: inline-block;
+            background-color: rgba(255, 0, 8, 0.55);
+            width: 15px;
+            height: 15px;
+            line-height: 15px;
+            color: white!important;
+            font-size: 10px!important;
+            text-align: center;
+            border-radius: 10px;
+        }
     </style>
 {% endblock %}
 
@@ -17,6 +28,7 @@
                     <div class="" id="style-1">
 
                         {% for foo in users %}
+                            {% set cm, count =  get_last_message(foo) %}
                         <div class="activity-row">
 
                             <div class="col-xs-3 activity-img"><img src='{{ url_for("static",filename='images/avatar.jpg') }}' class="img-responsive" alt=""/>
@@ -25,10 +37,17 @@
                             <div class="col-xs-7 activity-desc">
                                 <a href="{{ url_for('customer_main.message',uid=foo.id) }}">
                                     <h5>{{ foo.username }}</h5>
-                                    <p>Hey ! There I'm available.</p>
+                                    <p>{{ cm[:20] }}</p>
                                 </a>
                             </div>
                             <div class="col-xs-2 activity-desc1"><h6>12:05 PM</h6></div>
+                            <div class="col-xs-2 activity-desc1"><h6>
+                                {% if count %}
+                                    <span class="red_tip">{{ count }}</span>
+                                {% endif %}
+                                </h6>
+
+                            </div>
 
 
                             <div class="clearfix"></div>
